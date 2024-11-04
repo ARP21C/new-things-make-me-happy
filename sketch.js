@@ -3,6 +3,7 @@ let ball;
 let floor1;
 let showInstructions = true;
 let dots;
+let secondDots;
 const dotCount = 6;
 let score = 0;
 
@@ -34,7 +35,27 @@ function setup() {
         dot.color = 'yellow'; // Set the color of the dots
         dots.add(dot); // Add the dot to the dots group
 
+	// Create the second dots group
+	secondDots = new Group();
+
+		// Add dots to the group above the second floor (325, 500)
+		for (let i = 0; i < dotCount; i++) {
+			let dot = new Sprite((i * 30) + 250, 480, 10, 10, 'static'); // Positioning the dots above the second floor
+			dot.color = 'yellow'; // Set the color of the dots
+			secondDots.add(dot); // Add the dot to the second dots group
+		}
+
+	//create the third group of dots
+	thirdDots = new Group();
+		//add dots above the third platform
+		for (let i = 0; i < dotCount; i++) {
+			let dot = new Sprite((i * 30) + 525, 580, 10, 10, 'static'); // Positioning the dots above the second floor
+			dot.color = 'yellow'; // Set the color of the dots
+			thirdDots.add(dot); // Add the dot to the second dots group
+		}
 	ball.overlaps(dot, collect);
+	ball.overlaps(secondDots, collect);
+	ball.overlaps(thirdDots, collect);
 	}
 }	
 
@@ -109,6 +130,14 @@ function collectDots() {
 
 function collect(ball, dot){
 	dot.remove();
+}
+
+function collect(ball,secondDots) {
+	secondDots.remove();
+}
+
+function collect(ball, thirdDots){
+	thirdDots.remove();
 }
 
 console.log
