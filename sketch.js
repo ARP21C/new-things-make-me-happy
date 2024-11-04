@@ -1,5 +1,6 @@
 let state = 0
-let ball, floor;
+let ball;
+let floor1;
 let showInstructions = true;
 
 
@@ -13,10 +14,16 @@ function setup() {
     ball.diameter = 50;
     ball.color = 'red';
     ball.x = 50; // Starting position
-    ball.y = height - 100;
-    ball.vel = { x: 0, y: 0 }; // Initialize velocity
+  
 
-	floor = new Sprite(40, 600, 80, 5, 'static');
+	//create lvl1 platforms
+	floor1 = new Sprite(40, 600, 300, 5, 'static');
+	floor1 = new Sprite(325, 500, 200, 5, 'static');
+	floor1 = new Sprite(600, 600, 200, 5, 'static');
+	floor1 = new Sprite(850, 500, 200, 5, 'static');
+	floor1 = new Sprite(1200, 600, 300, 5, 'static');
+	
+
 
 }
 
@@ -64,8 +71,8 @@ function ballMovement() {
         ball.x += 5; // Move right
     }
     // Jump if the ball is on the floor
-    if (keyIsDown(UP_ARROW) && ball.y >= height - 100) { // Change this condition as needed to check if on the floor
-        ball.vel.y = -10; // Jump velocity
+    if (keyIsDown(UP_ARROW) ) { // Change this condition as needed to check if on the floor
+        ball.vel.y = -5; // Jump velocity
     }
 
     // Apply gravity
