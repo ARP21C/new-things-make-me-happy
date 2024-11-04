@@ -10,10 +10,13 @@ function setup() {
 
 	// Create the player ball
 	ball = new Sprite();
-	ball.diameter = 50;
-	ball.color = 'red';
-	ball.x = width / 4; // Starting position
-	ball.y = height - 100;
+    ball.diameter = 50;
+    ball.color = 'red';
+    ball.x = width / 4; // Starting position
+    ball.y = height - 100;
+    ball.vel = { x: 0, y: 0 }; // Initialize velocity
+
+
 
 }
 
@@ -47,14 +50,17 @@ function draw() {
 
 			// Draw platforms and check for collisions
 			for (let platform of platforms) {
-				if (ball.collides(platform)) {
-					ball.vel.y = 0;
-					ball.y = platform.y - ball.diameter / 2;
+                if (ball.collides(platform)) {
+                    // If the ball is falling and collides with a platform, stop its downward motion
+                    if (ball.vel.y > 0) {
+                        ball.vel.y = 0; // Stop downward velocity
+                        ball.y = platform.y - ball.diameter / 2; // Position the ball on top of the platform
 				}
 			}
 			break;
 		}
 	}
+}
 
 	function keyPressed() {
 		// Check if an arrow key is pressed to start the level
@@ -72,7 +78,7 @@ function createPlatforms() {
 		{ x: 650, y: height - 100 },
 		{ x: 900, y: height - 150 },
 		{ x: 1150, y: height - 100 }
-	]
+	];
 	for (let pos of platformPositions) {
 		let platform = new Sprite();
 		platform.width = 150;
@@ -80,6 +86,7 @@ function createPlatforms() {
 		platform.color = 'green';
 		platform.x = pos.x;
 		platform.y = pos.y;
+		platform.immovable = true; // Ensure the platform is immovable
 		platforms.push(platform);
 }
 }
