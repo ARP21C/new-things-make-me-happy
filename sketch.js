@@ -1,22 +1,22 @@
 let state = 0
-let ball;
+let ball, floor;
 let showInstructions = true;
-let platforms = []; //array to hold platform sprites for level 1 only
-let platformsCreated = false;
+
 
 function setup() {
 	new Canvas(windowWidth, windowHeight);
 	displayMode('centered');
+	world.gravity.y = 10;
 
 	// Create the player ball
 	ball = new Sprite();
     ball.diameter = 50;
     ball.color = 'red';
-    ball.x = width / 4; // Starting position
+    ball.x = 50; // Starting position
     ball.y = height - 100;
     ball.vel = { x: 0, y: 0 }; // Initialize velocity
 
-
+	floor = new Sprite(40, 600, 80, 5, 'static');
 
 }
 
@@ -39,69 +39,37 @@ function draw() {
 			}
 			break;
 		case 1:
-			// Level 1 gameplay
-			if (!platformsCreated) {
-				createPlatforms();
-				platformsCreated = true;
-			}
-
-			// Ball movement and gravity
 			ballMovement();
-
-			// Draw platforms and check for collisions
-			for (let platform of platforms) {
-                if (ball.collides(platform)) {
-                    // If the ball is falling and collides with a platform, stop its downward motion
-                    if (ball.vel.y > 0) {
-                        ball.vel.y = 0; // Stop downward velocity
-                        ball.y = platform.y - ball.diameter / 2; // Position the ball on top of the platform
-				}
-			}
 			break;
 		}
 	}
-}
+
 
 	function keyPressed() {
 		// Check if an arrow key is pressed to start the level
 		if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW || keyCode === UP_ARROW || keyCode === DOWN_ARROW) {
 			showInstructions = false; // Hide the instructions
 			state = 1; // Move to the actual level gameplay
+			
+	}
 		}
-	}
-
-	// Function to create platforms for Level 1
-function createPlatforms() {
-	let platformPositions = [
-		{ x: 150, y: height - 100 },
-		{ x: 400, y: height - 150 },
-		{ x: 650, y: height - 100 },
-		{ x: 900, y: height - 150 },
-		{ x: 1150, y: height - 100 }
-	];
-	for (let pos of platformPositions) {
-		let platform = new Sprite();
-		platform.width = 150;
-		platform.height = 20;
-		platform.color = 'green';
-		platform.x = pos.x;
-		platform.y = pos.y;
-		platform.immovable = true; // Ensure the platform is immovable
-		platforms.push(platform);
-}
-}
-
-// Function for ball movement with arrow keys
+	
+	// Function for ball movement with arrow keys
 function ballMovement() {
-	if (keyIsDown(LEFT_ARROW)) {
-		ball.x -= 5;
-	}
-	if (keyIsDown(RIGHT_ARROW)) {
-		ball.x += 5;
-	}
-	if (keyIsDown(UP_ARROW) && ball.vel.y === 0) { // Jump only if on a platform or ground
-		ball.vel.y = -10;
-	}
-	ball.vel.y += 0.5; // Gravity
-	ball.y += ball.vel.y;
+    // Move the ball left and right
+    if (keyIsDown(LEFT_ARROW)) {
+        ball.x -= 5; // Move left
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+        ball.x += 5; // Move right
+    }
+    // Jump if the ball is on the floor
+    if (keyIsDown(UP_ARROW) && ball.y >= height - 100) { // Change this condition as needed to check if on the floor
+        ball.vel.y = -10; // Jump velocity
+    }
+
+    // Apply gravity
+    ball.vel.y += 0.5; // Gravity effect
+    ball.y += ball.vel.y; // Update ball's vertical position
+
 }
