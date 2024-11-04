@@ -2,6 +2,10 @@ let state = 0
 let ball;
 let floor1;
 let showInstructions = true;
+let dots;
+const dotCount = 6;
+let score = 0;
+
 
 
 function setup() {
@@ -23,9 +27,16 @@ function setup() {
 	floor1 = new Sprite(850, 500, 200, 5, 'static');
 	floor1 = new Sprite(1200, 600, 300, 5, 'static');
 	
+	dots = new Group();
+	// Add dots to the group above the first floor
+    for (let i = 0; i < dotCount; i++) {
+        let dot = new Sprite((i * 30) + 40, 580, 10, 10, 'static'); // Positioning the dots above the first floor
+        dot.color = 'yellow'; // Set the color of the dots
+        dots.add(dot); // Add the dot to the dots group
 
-
-}
+	ball.overlaps(dot, collect);
+	}
+}	
 
 function draw() {
 	background('skyblue');
@@ -80,3 +91,24 @@ function ballMovement() {
     ball.y += ball.vel.y; // Update ball's vertical position
 
 }
+// Function to check for dot collection
+function collectDots() {
+    // Create a copy of the dots array to avoid modifying it while iterating
+    let collectedDots = [];
+    for (let dot of dots) {
+        if (ball.collides(dot)) {
+            score += 1; // Increase score by 1
+            collectedDots.push(dot); // Mark the dot for removal
+        }
+    }
+    // Remove collected dots from the dots group
+    for (let dot of collectedDots) {
+        dots.remove(dot); // Remove the dot from the group
+    }
+}
+
+function collect(ball, dot){
+	dot.remove();
+}
+
+console.log
