@@ -62,6 +62,12 @@ function setup() {
 function draw() {
 	background('skyblue');
 
+	//set the camera's x position to the ball's x position
+	camera.x = ball.x;
+
+	//constrain the camera to stay within the boundaries
+	camera.x = constrain(camera.x, 40, 900);
+
 	switch (state) {
 		case 0:
 			//level 1 intro screen
