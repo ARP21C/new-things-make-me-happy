@@ -65,7 +65,7 @@ function setup() {
 	//enable ball and flag collision check
 	ball.overlaps(flag, winLevel);
 	
-	//allSprites.autoDraw = false;
+	
 	}
 }	
 
@@ -92,8 +92,10 @@ function draw() {
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
 				text("Press an arrow key to start.", width / 2, height / 2 + 80);
 			}
+			
 		case 1:
 			ballMovement();
+			
 
 			
 			
@@ -168,6 +170,14 @@ function collect(ball, thirdDots){
 
 function winLevel(){
 	state = 2;//move to win state
+	// Remove everything from level 1
+    ball.visible = false;
+    dots.remove();
+    secondDots.remove();
+    thirdDots.remove();
+    for (let floor of floors) {
+        floor.remove();
+    }
 }
 
 console.log
