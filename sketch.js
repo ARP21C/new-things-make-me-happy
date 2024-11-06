@@ -10,6 +10,8 @@ let flag;
 
 
 
+
+
 function setup() {
 	new Canvas(windowWidth, windowHeight);
 	displayMode('centered');
@@ -60,10 +62,11 @@ function setup() {
 
 	//create the flag at the end of the level
 	flag = new Sprite(1200, 550, 30, 80, 'static');
-	flag.color = 'green';
+	flag.color = 'purple';
 
 	//enable ball and flag collision check
 	ball.overlaps(flag, winLevel);
+	
 	
 	
 	}
@@ -169,15 +172,19 @@ function collect(ball, thirdDots){
 }
 
 function winLevel(){
+	log("whiinlevel")
 	state = 2;//move to win state
+
 	// Remove everything from level 1
     ball.visible = false;
     dots.remove();
-    secondDots.remove();
+    flag.remove();
+	secondDots.remove();
     thirdDots.remove();
     for (let floor of floors) {
         floor.remove();
     }
+
 }
 
 console.log
