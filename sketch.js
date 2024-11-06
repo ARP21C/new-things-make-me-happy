@@ -65,7 +65,7 @@ function setup() {
 	//enable ball and flag collision check
 	ball.overlaps(flag, winLevel);
 	
-	allSprites.autoDraw = false;
+	//allSprites.autoDraw = false;
 	}
 }	
 
@@ -91,10 +91,12 @@ function draw() {
 				text("Use the arrow keys to control your player in attempts to collect as much money as you can.", width / 2, height / 2);
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
 				text("Press an arrow key to start.", width / 2, height / 2 + 80);
+			}
+		case 1:
 			ballMovement();
 
 			
-			}
+			
 			break;
 		case 2:
 			background('skyblue');
@@ -164,5 +166,8 @@ function collect(ball, thirdDots){
 	thirdDots.remove();
 }
 
+function winLevel(){
+	state = 2;//move to win state
+}
 
 console.log
