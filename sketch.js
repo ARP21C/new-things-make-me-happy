@@ -1,11 +1,12 @@
 let state = 0
 let ball;
-let floor1;
+let floors = [];
 let showInstructions = true;
 let dots;
 let secondDots;
 const dotCount = 6;
 let score = 0;
+let flag;
 
 
 
@@ -22,11 +23,11 @@ function setup() {
   
 
 	//create lvl1 platforms
-	floor1 = new Sprite(40, 600, 300, 5, 'static');
-	floor1 = new Sprite(325, 500, 200, 5, 'static');
-	floor1 = new Sprite(600, 600, 200, 5, 'static');
-	floor1 = new Sprite(850, 500, 200, 5, 'static');
-	floor1 = new Sprite(1200, 600, 300, 5, 'static');
+	floors.push(new Sprite(40, 600, 300, 5, 'static'));
+	floors.push(new Sprite(325, 500, 200, 5, 'static'));
+	floors.push(new Sprite(600, 600, 200, 5, 'static'));
+	floors.push(new Sprite(850, 500, 200, 5, 'static'));
+	floors.push(new Sprite(1200, 600, 300, 5, 'static'));
 	
 	dots = new Group();
 	// Add dots to the group above the first floor
@@ -56,6 +57,15 @@ function setup() {
 	ball.overlaps(dot, collect);
 	ball.overlaps(secondDots, collect);
 	ball.overlaps(thirdDots, collect);
+
+	//create the flag at the end of the level
+	flag = new Sprite(1200, 550, 30, 80, 'static');
+	flag.color = 'green';
+
+	//enable ball and flag collision check
+	ball.overlaps(flag, winLevel);
+	
+	allSprites.autoDraw = false;
 	}
 }	
 
@@ -66,7 +76,7 @@ function draw() {
 	camera.x = ball.x;
 
 	//constrain the camera to stay within the boundaries
-	camera.x = constrain(camera.x, 40, 900);
+	camera.x = constrain(camera.x, 200, 1050);
 
 	switch (state) {
 		case 0:
@@ -81,11 +91,19 @@ function draw() {
 				text("Use the arrow keys to control your player in attempts to collect as much money as you can.", width / 2, height / 2);
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
 				text("Press an arrow key to start.", width / 2, height / 2 + 80);
+			ballMovement();
+
+			
 			}
 			break;
-		case 1:
-			ballMovement();
-			break;
+		case 2:
+			background('skyblue');
+			textAlign(CENTER, CENTER);
+			textSize(48);
+			fill(0);
+			text("Congrats!", width / 2, height / 2);
+			textSize(32);
+			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
 		}
 	}
 
@@ -145,5 +163,6 @@ function collect(ball,secondDots) {
 function collect(ball, thirdDots){
 	thirdDots.remove();
 }
+
 
 console.log
