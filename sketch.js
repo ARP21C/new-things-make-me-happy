@@ -8,8 +8,8 @@ const dotCount = 6;
 let score = 0;
 let flag;
 let state2StartTime = 0;//tracks when state 2 starts
-let state2Duration = 5000; //5 seconds in milliseconds
-
+let state2Duration = 7000; //5 seconds in milliseconds
+let floorlvl2;
 
 
 
@@ -25,50 +25,55 @@ function setup() {
 	ball.color = 'red';
 	ball.x = 50; // Starting position
 
+	//LEVEL 1 SPRITES BELOW
 
-	//create lvl1 platforms
-	floors.push(new Sprite(40, 600, 300, 5, 'static'));
-	floors.push(new Sprite(325, 500, 200, 5, 'static'));
-	floors.push(new Sprite(600, 600, 200, 5, 'static'));
-	floors.push(new Sprite(850, 500, 200, 5, 'static'));
-	floors.push(new Sprite(1200, 600, 300, 5, 'static'));
+		//create lvl1 platforms
+		floors.push(new Sprite(40, 600, 300, 5, 'static'));
+		floors.push(new Sprite(325, 500, 200, 5, 'static'));
+		floors.push(new Sprite(600, 600, 200, 5, 'static'));
+		floors.push(new Sprite(850, 500, 200, 5, 'static'));
+		floors.push(new Sprite(1200, 600, 300, 5, 'static'));
 
-	dots = new Group();
-	// Add dots to the group above the first floor
-	for (let i = 0; i < dotCount; i++) {
-		let dot = new Sprite((i * 30) + 40, 580, 10, 10, 'static'); // Positioning the dots above the first floor
-		dot.color = 'yellow'; // Set the color of the dots
-		dots.add(dot); // Add the dot to the dots group
-	}
-		// Create the second dots group
-		secondDots = new Group();
-
-		// Add dots to the group above the second floor (325, 500)
+		dots = new Group();
+		// Add dots to the group above the first floor
 		for (let i = 0; i < dotCount; i++) {
-			let dot = new Sprite((i * 30) + 250, 480, 10, 10, 'static'); // Positioning the dots above the second floor
+			let dot = new Sprite((i * 30) + 40, 580, 10, 10, 'static'); // Positioning the dots above the first floor
 			dot.color = 'yellow'; // Set the color of the dots
-			secondDots.add(dot); // Add the dot to the second dots group
+			dots.add(dot); // Add the dot to the dots group
 		}
+			// Create the second dots group
+			secondDots = new Group();
 
-		//create the third group of dots
-		thirdDots = new Group();
-		//add dots above the third platform
-		for (let i = 0; i < dotCount; i++) {
-			let dot = new Sprite((i * 30) + 525, 580, 10, 10, 'static'); // Positioning the dots above the second floor
-			dot.color = 'yellow'; // Set the color of the dots
-			thirdDots.add(dot); // Add the dot to the second dots group
-		}
-		ball.overlaps(dots, collect);
-		ball.overlaps(secondDots, collect);
-		ball.overlaps(thirdDots, collect);
+			// Add dots to the group above the second floor (325, 500)
+			for (let i = 0; i < dotCount; i++) {
+				let dot = new Sprite((i * 30) + 250, 480, 10, 10, 'static'); // Positioning the dots above the second floor
+				dot.color = 'yellow'; // Set the color of the dots
+				secondDots.add(dot); // Add the dot to the second dots group
+			}
 
-		//create the flag at the end of the level
-		flag = new Sprite(1200, 550, 30, 80, 'static');
-		flag.color = 'purple';
+			//create the third group of dots
+			thirdDots = new Group();
+			//add dots above the third platform
+			for (let i = 0; i < dotCount; i++) {
+				let dot = new Sprite((i * 30) + 525, 580, 10, 10, 'static'); // Positioning the dots above the second floor
+				dot.color = 'yellow'; // Set the color of the dots
+				thirdDots.add(dot); // Add the dot to the second dots group
+			}
+			ball.overlaps(dots, collect);
+			ball.overlaps(secondDots, collect);
+			ball.overlaps(thirdDots, collect);
 
-		//enable ball and flag collision check
-		ball.overlaps(flag, winLevel);
+			//create the flag at the end of the level
+			flag = new Sprite(1200, 550, 30, 80, 'static');
+			flag.color = 'purple';
 
+			//enable ball and flag collision check
+			ball.overlaps(flag, winLevel);
+		
+		//LEVEL 2 SPRITES BELOW
+
+			floorlvl2 = new Sprite(40, 600, 2000, 5, 'static');
+			floorlvl2.autoDraw = false;
 
 
 	
@@ -106,6 +111,7 @@ function draw() {
 
 
 			break;
+
 		case 2:
 			background('skyblue');
 			textAlign(CENTER, CENTER);
@@ -118,8 +124,16 @@ function draw() {
 			//check if 5 seconds have passed
 			if (millis() - state2StartTime >= state2Duration) {
 				state = 3;
+				resetForeState3(); //reset ball for state 3
 			}
 			break;
+
+		case 3:
+			floorlvl2.draw();
+			//make the player ball reappear
+			ball.visible = true;
+			ball.draw();
+
 	}
 }
 
@@ -193,7 +207,17 @@ function winLevel() {
 	for (let floor of floors) {
 		floor.remove();
 	}
-
 }
+
+	// Reset function to prepare for state 3
+function resetForState3() {
+    // Reset ball properties
+    ball.visible = true;
+    ball.x = 50; // Reset to initial position
+    ball.y = 550; // Place it on the ground level or any desired starting y-coordinate
+    ball.vel.x = 0;
+    ball.vel.y = 0;
+}
+
 
 console.log
