@@ -11,6 +11,8 @@ let state2Duration = 7000; //5 seconds in milliseconds
 let floorlvl2;
 let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
+let state4StartTime = 0
+let state4Duration = 7000;
 
 
 
@@ -24,7 +26,7 @@ function setup() {
 	ball = new Sprite();
 	ball.diameter = 50;
 	ball.color = 'red';
-	ball.x = 50; // Starting position
+	ball.x = ; // Starting position
 	ball.y = 550;
 
 	//LEVEL 1 SPRITES BELOW
@@ -173,6 +175,28 @@ function draw() {
 			ball.overlaps(flaglvl2, winLevel2);
 			break;
 
+		case 4:
+			background('skyblue');
+			textAlign(CENTER, CENTER);
+			textSize(48);
+			fill(0);
+			text("Congrats!", width / 2, height / 2);
+			textSize(32);
+			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
+
+			// Ensure state4StartTime is set when entering state 4
+			if (state4StartTime === 0) {
+				state4StartTime = millis(); // Record the time when state 4 starts
+			}
+			
+			//check if 5 seconds have passed
+			if (millis() - state4StartTime >= state4Duration) {
+				state = 5;
+				
+			}
+			break;
+		case 5:
+
 	}
 }
 
@@ -263,6 +287,7 @@ function winLevel2() {
 	ball.visible = false;
 	heartobstacles.forEach(heartobstacle => heartobstacle.remove());
 	flaglvl2.remove();
+	floorlvl2.remove();
 }
 
 function resetState3() {
