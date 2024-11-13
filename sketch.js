@@ -13,6 +13,11 @@ let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
 let state4StartTime = 0
 let state4Duration = 4000;
+let family;
+let familySpeed = 2;
+let familyDirection = 1;
+let familyMinX, familyMaxX;
+let survivalTimer = 0; //track start time  of level 3
 
 
 
@@ -94,17 +99,39 @@ function setup() {
 				heartobstacles.add(heartobstacle);
 			}
 
+		//LEVEL 3 SPRITES BELOW
+			
+			floorlvl3 = new Sprite(width * 0.5, height * 0.95, width * 1, 5, 'static');
+			floorlvl3.visible = false;
+			floorlvl3.autodraw = false;
+
+			//create a family sprite that moves randomly
+			family = new Sprite();
+			family.size = width * 0.1;
+			family.x = width * 0.3;
+			family.y = height * 0.9;
+			family.vel.x = familySpeed; //horizontal speed
+			family.visible = false;
+			family.autodraw = false;
+
+			// Set the boundaries for family movement along the floor
+			familyMinX = floorlvl3.x - (floorlvl3.width / 2) + (family.size / 2); // Left edge
+			familyMaxX = floorlvl3.x + (floorlvl3.width / 2) - (family.size / 2); // Right edge
+
 	
 }
 
 function draw() {
 	background('skyblue');
 
-	//set the camera's x position to the ball's x position
-	camera.x = ball.x;
-
-	//constrain the camera to stay within the boundaries
-	camera.x = constrain(camera.x, width * 0.2, 2000);
+	// Handle camera positioning
+    if (state === 5) {
+        camera.x = width * 0.5; // Fix the camera in the center for level 3
+        camera.y = height * 0.5;
+    } else {
+        camera.x = ball.x; // Default: camera follows the ball
+        camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
+    }
 
 	switch (state) {
 		case 0:
@@ -124,10 +151,6 @@ function draw() {
 
 		case 1:
 			ballMovement();
-
-
-
-
 			break;
 
 		case 2:
@@ -195,7 +218,44 @@ function draw() {
 				
 			}
 			break;
+
 		case 5:
+
+			floorlvl3.visible = true;
+			if (floorlvl3.visible) floorlvl3.draw();
+
+			//ball reappears
+			ball.visible = true;
+			ball.active = true;
+			ballMovement();
+
+			
+			// Ensure ball stays within screen bounds
+            ball.x = constrain(ball.x, 0, width); // Constrain horizontal movement
+            ball.y = constrain(ball.y, 0, height); // Constrain vertical movement
+
+			family.visible = true;
+			family.draw();
+            // Family sprite moves randomly in level 3
+            family.x += family.vel.x;
+
+			// Reverse direction if family reaches the left or right edge
+            if (family.x <= familyMinX || family.x >= familyMaxX) {
+                family.vel.x *= -1; // Reverse horizontal direction
+            }
+
+            // Check if the ball touches the family sprite
+            if (ball.overlaps(family)) {
+                resetLevel3(); // Reset level if ball touches family
+            }
+
+            // Track time survived in level 3
+            survivalTimer += deltaTime;
+            if (survivalTimer >= 30000) { // 30 seconds
+                state = 6; // Move to state 6 if survived for 30 seconds
+            }
+
+            break;
 
 	}
 }
@@ -294,4 +354,12 @@ function resetState3() {
 	resetForState3();
 }
 
+function resetLevel3() {
+    // Reset the level if the ball touches the family sprite
+    ball.x = width * 0.1; // Reset ball position
+    ball.y = height * 0.75; // Set ball on top of the floor
+    family.x = width * 0.3; // Reset family position
+    family.vel.x = familySpeed; // Reset family speed
+    survivalTimer = 0; // Reset the survival timer
+}
 console.log
