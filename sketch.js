@@ -10,6 +10,8 @@ let flag;
 let state2StartTime = 0;//tracks when state 2 starts
 let state2Duration = 7000; //5 seconds in milliseconds
 let floorlvl2;
+let heartobstacles; //lvl 2 heart obstacles
+let flaglvl2;
 
 
 
@@ -72,8 +74,18 @@ function setup() {
 		
 		//LEVEL 2 SPRITES BELOW
 
-			floorlvl2 = new Sprite(40, 600, 2000, 5, 'static');
-			floorlvl2.autoDraw = false;
+			floorlvl2 = new Sprite(40, 550, 2000, 5, 'static');
+			floorlvl2.visible = false;
+
+			heartobstacles = new Group();
+			flaglvl2 = new Sprite (1800,550,30,80, 'static');
+			flaglvl2.visible = false; //hidden until state 3
+
+			for (let i = 0; i < 5; i++) {
+				let heartobstacle = new Sprite(400 + i * 300, 570, 30, 30, 'static');
+				heartobstacle.visible = false;
+				heartobstacles.add(heartobstacle);
+			}
 
 
 	
@@ -124,15 +136,25 @@ function draw() {
 			//check if 5 seconds have passed
 			if (millis() - state2StartTime >= state2Duration) {
 				state = 3;
-				resetForeState3(); //reset ball for state 3
+				resetForState3(); //reset ball for state 3
+				floorlvl2.visible = true;
 			}
 			break;
 
 		case 3:
-			floorlvl2.draw();
+			if (floorlvl2.visible) floorlvl2.draw();
 			//make the player ball reappear
 			ball.visible = true;
-			ball.draw();
+			ball.active = true;
+			
+			ballMovement();
+
+			//check if  ball collides w any obstacles
+			ball.overlaps(heartobstacles, resetState3);
+
+			//check if ball reaches flag
+			ball.overlaps(flaglvl2, winLevel2);
+			break;
 
 	}
 }
@@ -219,5 +241,15 @@ function resetForState3() {
     ball.vel.y = 0;
 }
 
+function winLevel2() {
+	state = 4;
+	ball.visible = false;
+	heartobstacles.forEach(heartobstacle => heartobstacle.remove());
+	flaglvl2.remove();
+}
+
+function resetState3() {
+	resetForState3();
+}
 
 console.log
