@@ -215,6 +215,7 @@ function draw() {
 			//check if 5 seconds have passed
 			if (millis() - state4StartTime >= state4Duration) {
 				state = 5;
+				resetLevel3();
 				
 			}
 			break;
@@ -356,8 +357,12 @@ function resetState3() {
 
 function resetLevel3() {
     // Reset the level if the ball touches the family sprite
-    ball.x = width * 0.1; // Reset ball position
-    ball.y = height * 0.75; // Set ball on top of the floor
+	// Reset ball properties
+	ball.visible = true;
+	ball.x = 50; // Reset to initial position
+	ball.y = 550; // Place it on the ground level or any desired starting y-coordinate
+	ball.vel.x = 0;
+	ball.vel.y = 0;
     family.x = width * 0.3; // Reset family position
     family.vel.x = familySpeed; // Reset family speed
     survivalTimer = 0; // Reset the survival timer
