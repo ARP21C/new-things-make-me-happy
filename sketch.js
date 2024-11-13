@@ -12,7 +12,7 @@ let floorlvl2;
 let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
 let state4StartTime = 0
-let state4Duration = 7000;
+let state4Duration = 4000;
 
 
 
@@ -26,22 +26,22 @@ function setup() {
 	ball = new Sprite();
 	ball.diameter = 50;
 	ball.color = 'red';
-	ball.x = ; // Starting position
-	ball.y = 550;
+	ball.x = width * 0.1; // Starting position
+	ball.y = height * 0.75;
 
 	//LEVEL 1 SPRITES BELOW
 
 		//create lvl1 platforms
-		floors.push(new Sprite(40, 600, 300, 5, 'static'));
-		floors.push(new Sprite(325, 500, 200, 5, 'static'));
-		floors.push(new Sprite(600, 600, 200, 5, 'static'));
-		floors.push(new Sprite(850, 500, 200, 5, 'static'));
-		floors.push(new Sprite(1200, 600, 300, 5, 'static'));
+		floors.push(new Sprite(width * 0.05, height * 0.95, 300, 5, 'static'));
+		floors.push(new Sprite(325, height * 0.8, 200, 5, 'static'));
+		floors.push(new Sprite(600, height * 0.95, 200, 5, 'static'));
+		floors.push(new Sprite(850, height * 0.8, 200, 5, 'static'));
+		floors.push(new Sprite(1200, height * 0.95, 300, 5, 'static'));
 
 		dots = new Group();
 		// Add dots to the group above the first floor
 		for (let i = 0; i < dotCount; i++) {
-			let dot = new Sprite((i * 30) + 40, 580, 10, 10, 'static'); // Positioning the dots above the first floor
+			let dot = new Sprite((i * 30) + 40, height * 0.9, 10, 10, 'static'); // Positioning the dots above the first floor
 			dot.color = 'yellow'; // Set the color of the dots
 			dots.add(dot); // Add the dot to the dots group
 		}
@@ -50,7 +50,7 @@ function setup() {
 
 			// Add dots to the group above the second floor (325, 500)
 			for (let i = 0; i < dotCount; i++) {
-				let dot = new Sprite((i * 30) + 250, 480, 10, 10, 'static'); // Positioning the dots above the second floor
+				let dot = new Sprite((i * 30) + 250, height * 0.75, 10, 10, 'static'); // Positioning the dots above the second floor
 				dot.color = 'yellow'; // Set the color of the dots
 				secondDots.add(dot); // Add the dot to the second dots group
 			}
@@ -59,7 +59,7 @@ function setup() {
 			thirdDots = new Group();
 			//add dots above the third platform
 			for (let i = 0; i < dotCount; i++) {
-				let dot = new Sprite((i * 30) + 525, 580, 10, 10, 'static'); // Positioning the dots above the second floor
+				let dot = new Sprite((i * 30) + 525, height * 0.9, 10, 10, 'static'); // Positioning the dots above the second floor
 				dot.color = 'yellow'; // Set the color of the dots
 				thirdDots.add(dot); // Add the dot to the second dots group
 			}
@@ -68,7 +68,7 @@ function setup() {
 			ball.overlaps(thirdDots, collect);
 
 			//create the flag at the end of the level
-			flag = new Sprite(1200, 550, 30, 80, 'static');
+			flag = new Sprite(1200, height * 0.88, 30, 80, 'static');
 			flag.color = 'purple';
 
 			//enable ball and flag collision check
@@ -76,19 +76,19 @@ function setup() {
 		
 		//LEVEL 2 SPRITES BELOW
 
-			floorlvl2 = new Sprite(40, 600, 4000, 5, 'static');
+			floorlvl2 = new Sprite(40, height * 0.95, 4000, 5, 'static');
 			floorlvl2.autodraw = false;
 			floorlvl2.visible = false;
 
 			heartobstacles = new Group();
-			flaglvl2 = new Sprite (2000,550,30,80, 'static');
+			flaglvl2 = new Sprite (2000,height * 0.88,30,80, 'static');
 			flaglvl2.color = green;
 			flaglvl2.autodraw = false; //hidden until state 3
 			flaglvl2.visible = false;
 			
 
 			for (let i = 0; i < 5; i++) {
-				let heartobstacle = new Sprite(400 + i * 300, 570, 30, 30, 'static');
+				let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 30, 30, 'static');
 				heartobstacle.autodraw = false;
 				heartobstacle.visible = false;
 				heartobstacles.add(heartobstacle);
@@ -104,18 +104,18 @@ function draw() {
 	camera.x = ball.x;
 
 	//constrain the camera to stay within the boundaries
-	camera.x = constrain(camera.x, 200, 2000);
+	camera.x = constrain(camera.x, width * 0.2, 2000);
 
 	switch (state) {
 		case 0:
 			//level 1 intro screen
 			if (showInstructions) {
 				textAlign(CENTER, CENTER);
-				textSize(48);
+				textSize(width * 0.08);
 				fill(0);
 				text("Level 1: Gold Rush Valley", width / 2, height / 3);
 
-				textSize(20);
+				textSize(width * 0.025);
 				text("Use the arrow keys to control your player in attempts to collect as much money as you can.", width / 2, height / 2);
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
 				text("Press an arrow key to start.", width / 2, height / 2 + 80);
