@@ -2,8 +2,7 @@ let state = 0
 let ball;
 let floors = [];
 let showInstructions = true;
-let dots;
-let secondDots;
+let dots, secondDots, thirdDots;
 const dotCount = 6;
 let score = 0;
 let flag;
@@ -26,6 +25,7 @@ function setup() {
 	ball.diameter = 50;
 	ball.color = 'red';
 	ball.x = 50; // Starting position
+	ball.y = 550;
 
 	//LEVEL 1 SPRITES BELOW
 
@@ -74,19 +74,22 @@ function setup() {
 		
 		//LEVEL 2 SPRITES BELOW
 
-			floorlvl2 = new Sprite(40, 550, 2000, 5, 'static');
+			floorlvl2 = new Sprite(40, 600, 2000, 5, 'static');
+			floorlvl2.autodraw = false;
 			floorlvl2.visible = false;
 
 			heartobstacles = new Group();
 			flaglvl2 = new Sprite (1800,550,30,80, 'static');
-			flaglvl2.visible = false; //hidden until state 3
+			flaglvl2.autodraw = false; //hidden until state 3
+			flaglvl2.visible = false;
+			
 
 			for (let i = 0; i < 5; i++) {
 				let heartobstacle = new Sprite(400 + i * 300, 570, 30, 30, 'static');
+				heartobstacle.autodraw = false;
 				heartobstacle.visible = false;
 				heartobstacles.add(heartobstacle);
 			}
-
 
 	
 }
@@ -136,18 +139,28 @@ function draw() {
 			//check if 5 seconds have passed
 			if (millis() - state2StartTime >= state2Duration) {
 				state = 3;
-				resetForState3(); //reset ball for state 3
 				floorlvl2.visible = true;
+				resetForState3(); //reset ball for state 3
+				
 			}
 			break;
 
 		case 3:
 			if (floorlvl2.visible) floorlvl2.draw();
+			
 			//make the player ball reappear
 			ball.visible = true;
 			ball.active = true;
 			
 			ballMovement();
+			
+			// Draw heart obstacles and flag for Level 2
+			heartobstacles.forEach(heartobstacle => {
+				if (heartobstacle.visible) heartobstacle.draw();
+			});
+			
+			if (flaglvl2.visible) flaglvl2.draw();
+		
 
 			//check if  ball collides w any obstacles
 			ball.overlaps(heartobstacles, resetState3);
