@@ -74,12 +74,13 @@ function setup() {
 		
 		//LEVEL 2 SPRITES BELOW
 
-			floorlvl2 = new Sprite(40, 600, 2000, 5, 'static');
+			floorlvl2 = new Sprite(40, 600, 4000, 5, 'static');
 			floorlvl2.autodraw = false;
 			floorlvl2.visible = false;
 
 			heartobstacles = new Group();
-			flaglvl2 = new Sprite (1800,550,30,80, 'static');
+			flaglvl2 = new Sprite (2000,550,30,80, 'static');
+			flaglvl2.color = green;
 			flaglvl2.autodraw = false; //hidden until state 3
 			flaglvl2.visible = false;
 			
@@ -101,7 +102,7 @@ function draw() {
 	camera.x = ball.x;
 
 	//constrain the camera to stay within the boundaries
-	camera.x = constrain(camera.x, 200, 1050);
+	camera.x = constrain(camera.x, 200, 2000);
 
 	switch (state) {
 		case 0:
@@ -155,10 +156,13 @@ function draw() {
 			ballMovement();
 			
 			// Draw heart obstacles and flag for Level 2
+
+			heartobstacles.visible = true;
 			heartobstacles.forEach(heartobstacle => {
 				if (heartobstacle.visible) heartobstacle.draw();
 			});
 			
+			flaglvl2.visible = true;
 			if (flaglvl2.visible) flaglvl2.draw();
 		
 
