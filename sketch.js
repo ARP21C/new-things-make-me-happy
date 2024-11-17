@@ -34,6 +34,8 @@ function setup() {
 	ball.x = width * 0.1; // Starting position
 	ball.y = height * 0.75;
 
+	camera.active = false;
+
 	//LEVEL 1 SPRITES BELOW
 
 		//create lvl1 platforms
@@ -110,7 +112,8 @@ function setup() {
 			family.size = width * 0.1;
 			family.x = width * 0.3;
 			family.y = height * 0.9;
-			family.vel.x = familySpeed; //horizontal speed
+			family.collider = 'dynamic';
+
 			family.visible = false;
 			family.autodraw = false;
 
@@ -123,15 +126,8 @@ function setup() {
 
 function draw() {
 	background('skyblue');
-
-	// Handle camera positioning
-    if (state === 5) {
-        camera.x = width * 0.5; // Fix the camera in the center for level 3
-        camera.y = height * 0.5;
-    } else {
-        camera.x = ball.x; // Default: camera follows the ball
-        camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
-    }
+	
+	
 
 	switch (state) {
 		case 0:
@@ -151,6 +147,8 @@ function draw() {
 
 		case 1:
 			ballMovement();
+			camera.x = ball.x; // Default: camera follows the ball
+			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
 
 		case 2:
@@ -196,6 +194,8 @@ function draw() {
 
 			//check if ball reaches flag
 			ball.overlaps(flaglvl2, winLevel2);
+			camera.x = ball.x; // Default: camera follows the ball
+			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
 
 		case 4:
@@ -238,24 +238,32 @@ function draw() {
 			family.visible = true;
 			family.draw();
             // Family sprite moves randomly in level 3
-            family.x += family.vel.x;
+			let speed = 4; // Movement speed
+			family.x += speed * familyDirection;
 
 			// Reverse direction if family reaches the left or right edge
-            if (family.x <= familyMinX || family.x >= familyMaxX) {
-                family.vel.x *= -1; // Reverse horizontal direction
-            }
-
-            // Check if the ball touches the family sprite
-            if (ball.overlaps(family)) {
-                resetLevel3(); // Reset level if ball touches family
-            }
+			if (family.x <= familyMinX || family.x >= familyMaxX) {
+				family.vel.x *= -1; // Reverse horizontal direction
+			}
+            ball.overlaps(family, resetLevel3);
 
             // Track time survived in level 3
             survivalTimer += deltaTime;
+
+			// Display the survival timer
+			textAlign(RIGHT, TOP); // Align text to the top-right corner
+			textSize(32); // Set text size
+			fill(0); // Set text color to black
+			text(`Survival Time: ${Math.floor(survivalTimer / 1000)}s`, width - 20, 20); // Show the timer in seconds
+
             if (survivalTimer >= 30000) { // 30 seconds
                 state = 6; // Move to state 6 if survived for 30 seconds
             }
 
+			// Fix the camera at the center of the screen
+			camera.x = width * 0.5;
+			camera.y = height * 0.5;
+			
             break;
 
 	}
@@ -366,5 +374,8 @@ function resetLevel3() {
     family.x = width * 0.3; // Reset family position
     family.vel.x = familySpeed; // Reset family speed
     survivalTimer = 0; // Reset the survival timer
+
+	// Reset survival timer
+    survivalTimer = 0; // Reset the timer so it starts from 0 again
 }
 console.log
