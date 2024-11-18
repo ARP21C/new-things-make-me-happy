@@ -19,6 +19,10 @@ let familySpeed = 2;
 let familyDirection = 1;
 let familyMinX, familyMaxX;
 let survivalTimer = 0; //track start time  of level 3
+let state6StartTime = 0;//tracks when state 6 starts
+let state6Duration = 4000; //5 seconds in milliseconds
+let state7StartTime = 0;//tracks when state 7 starts
+let state7Duration = 7000; //5 seconds in milliseconds
 
 
 
@@ -264,6 +268,7 @@ function draw() {
             // Check if 10 seconds have passed
     		if (survivalTime >= 10) {
        			 state = 6; // Move to state 6
+				 winLevel3();
     		}
 
 			// Fix the camera at the center of the screen
@@ -279,6 +284,34 @@ function draw() {
 			text("Congrats!", width / 2, height / 2);
 			textSize(32);
 			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
+
+			// Ensure state6StartTime is set when entering state 6
+			if (state6StartTime === 0) {
+				state6StartTime = millis(); // Record the time when state 6 starts
+			}
+			//check if 5 seconds have passed
+			if (millis() - state6StartTime >= state6Duration) {
+				state = 7;
+			}
+			break;
+		case 7:
+			background('skyblue');
+			textAlign(CENTER, CENTER);
+			textSize(48);
+			fill(0);
+			text("u died anyways bc of old age now ur items haunt u", width / 2, height / 2);
+			textSize(32);
+
+			// Ensure state7StartTime is set when entering state 6
+			if (state7StartTime === 0) {
+				state7StartTime = millis(); // Record the time when state 6 starts
+			}
+			if (millis() - state7StartTime >= state7Duration) {
+				state = 8;
+			}
+			break;
+		case 8:
+			background('red');
 			break;
 
 	}
@@ -397,5 +430,14 @@ function handleCollision() {
     resetLevel3();
 
     // Keep survivalTimer intact so it doesn't reset
+}
+
+function winLevel3() {
+	state = 6;
+
+	//remove sprites
+	ball.visible = false;
+	floorlvl3.remove();
+	family.remove();
 }
 console.log
