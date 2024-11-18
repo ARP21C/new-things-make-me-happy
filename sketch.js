@@ -212,15 +212,16 @@ function draw() {
 				state4StartTime = millis(); // Record the time when state 4 starts
 			}
 			
-			//check if 5 seconds have passed
 			if (millis() - state4StartTime >= state4Duration) {
 				state = 5;
+				survivalTime = 0; // Reset survival time counter
 				resetLevel3();
-				
 			}
 			break;
 
 		case 5:
+
+			background('skyblue'); // Clear the screen for each frame
 
 			floorlvl3.visible = true;
 			if (floorlvl3.visible) floorlvl3.draw();
@@ -237,6 +238,7 @@ function draw() {
 
 			family.visible = true;
 			family.draw();
+
             // Family sprite moves randomly in level 3
 			let speed = 4; // Movement speed
 			family.x += speed * familyDirection;
@@ -245,10 +247,12 @@ function draw() {
 			if (family.x <= familyMinX || family.x >= familyMaxX) {
 				family.vel.x *= -1; // Reverse horizontal direction
 			}
-            ball.overlaps(family, resetLevel3);
+            ball.overlaps(family, handleCollision);
 
-            // Track time survived in level 3
-            survivalTimer += deltaTime;
+			// Update survival timer (increment every frame)
+			if (frameCount % 60 === 0) { // Increment once per second (60 FPS)
+				survivalTime++;
+			}
 
 			// Display the survival timer
 			textAlign(RIGHT, TOP); // Align text to the top-right corner
@@ -256,15 +260,25 @@ function draw() {
 			fill(0); // Set text color to black
 			text(`Survival Time: ${Math.floor(survivalTimer / 1000)}s`, width - 20, 20); // Show the timer in seconds
 
-            if (survivalTimer >= 30000) { // 30 seconds
-                state = 6; // Move to state 6 if survived for 30 seconds
-            }
+            // Check if 10 seconds have passed
+    		if (survivalTime >= 10) {
+       			 state = 6; // Move to state 6
+    		}
 
 			// Fix the camera at the center of the screen
 			camera.x = width * 0.5;
 			camera.y = height * 0.5;
-			
             break;
+
+		case 6:
+			background('skyblue');
+			textAlign(CENTER, CENTER);
+			textSize(48);
+			fill(0);
+			text("Congrats!", width / 2, height / 2);
+			textSize(32);
+			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
+			break;
 
 	}
 }
@@ -295,7 +309,7 @@ function ballMovement() {
 
 	// Apply gravity
 	ball.vel.y += 0.5; // Gravity effect
-	ball.y += ball.vel.y; // Update ball's vertical position
+	//ball.y += ball.vel.y; // Update ball's vertical position
 
 }
 // Function to check for dot collection
@@ -327,7 +341,7 @@ function collect(ball, thirdDots) {
 }
 
 function winLevel() {
-	log("whiinlevel")
+	log("winlevel")
 	state = 2;//move to win state
 
 	// Remove everything from level 1
@@ -367,15 +381,21 @@ function resetLevel3() {
     // Reset the level if the ball touches the family sprite
 	// Reset ball properties
 	ball.visible = true;
-	ball.x = 50; // Reset to initial position
+	ball.x = 400; // Reset to initial position
 	ball.y = 550; // Place it on the ground level or any desired starting y-coordinate
 	ball.vel.x = 0;
 	ball.vel.y = 0;
     family.x = width * 0.3; // Reset family position
     family.vel.x = familySpeed; // Reset family speed
-    survivalTimer = 0; // Reset the survival timer
-
+   
 	// Reset survival timer
-    survivalTimer = 0; // Reset the timer so it starts from 0 again
+   
+}
+
+function handleCollision() {
+    // Reset ball and family positions on collision
+    resetLevel3();
+
+    // Keep survivalTimer intact so it doesn't reset
 }
 console.log
