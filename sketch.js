@@ -83,7 +83,6 @@ function setup() {
 		
 		//LEVEL 2 SPRITES BELOW
 
-	
 			floorlvl2 = new Sprite(40, height * 0.95, 4000, 5, 'static');
 			floorlvl2.autodraw = false;
 			floorlvl2.visible = false;
@@ -142,12 +141,12 @@ function draw() {
 				textSize(width * 0.025);
 				text("Use the arrow keys to control your player in attempts to collect as much money as you can.", width / 2, height / 2);
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
-				text("Press an arrow key to start.", width / 2, height / 2 + 80);
+				text("Press the space bar to start.", width / 2, height / 2 + 80);
 			}
 			
-			
+			break;
 
-		
+		case 1:
 			ballMovement();
 			camera.x = ball.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
@@ -172,9 +171,7 @@ function draw() {
 			break;
 
 		case 3:
-			if (floorlvl2.visible) {
-				 floorlvl2.draw();
-			}
+			if (floorlvl2.visible) floorlvl2.draw();
 			
 			//make the player ball reappear
 			ball.visible = true;
@@ -289,11 +286,11 @@ function draw() {
 
 
 function keyPressed() {
-	// Check if an arrow key is pressed to start the level
-	if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW || keyCode === UP_ARROW || keyCode === DOWN_ARROW) {
-		showInstructions = false; // Hide the instructions
-		
-	}
+	// Check if an space bar is pressed to start the level
+	if (keyCode === 32) { // 32 is the keyCode for the space bar
+        showInstructions = false; // Hide the instructions
+        state = 1; // Move to the actual level gameplay
+    }
 }
 
 // Function for ball movement with arrow keys
