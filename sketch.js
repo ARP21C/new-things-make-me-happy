@@ -13,12 +13,12 @@ let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
 let state4StartTime = 0
 let state4Duration = 4000;
+let floorlvl3;
 let family;
 let familySpeed = 2;
 let familyDirection = 1;
 let familyMinX, familyMaxX;
 let survivalTimer = 0; //track start time  of level 3
-
 
 
 
@@ -83,6 +83,7 @@ function setup() {
 		
 		//LEVEL 2 SPRITES BELOW
 
+	
 			floorlvl2 = new Sprite(40, height * 0.95, 4000, 5, 'static');
 			floorlvl2.autodraw = false;
 			floorlvl2.visible = false;
@@ -143,9 +144,10 @@ function draw() {
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
 				text("Press an arrow key to start.", width / 2, height / 2 + 80);
 			}
-			break;
+			
+			
 
-		case 1:
+		
 			ballMovement();
 			camera.x = ball.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
@@ -170,7 +172,9 @@ function draw() {
 			break;
 
 		case 3:
-			if (floorlvl2.visible) floorlvl2.draw();
+			if (floorlvl2.visible) {
+				 floorlvl2.draw();
+			}
 			
 			//make the player ball reappear
 			ball.visible = true;
@@ -288,8 +292,7 @@ function keyPressed() {
 	// Check if an arrow key is pressed to start the level
 	if (keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW || keyCode === UP_ARROW || keyCode === DOWN_ARROW) {
 		showInstructions = false; // Hide the instructions
-		state = 1; // Move to the actual level gameplay
-
+		
 	}
 }
 
