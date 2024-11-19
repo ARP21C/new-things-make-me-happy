@@ -6,13 +6,16 @@ let dots, secondDots, thirdDots;
 const dotCount = 6;
 let score = 0;
 let flag;
-let state2StartTime = 0;//tracks when state 2 starts
-let state2Duration = 7000; //5 seconds in milliseconds
+let state3StartTime = 0;//tracks when state 2 starts
+let state3Duration = 7000; //5 seconds in milliseconds
+let state4StartTime = 0;
+let state4Duration = 7000;
 let floorlvl2;
 let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
-let state5StartTime = 0
-let state5Duration = 4000;
+
+let state7StartTime = 0
+let state7Duration = 4000;
 let floorlvl3;
 let lvl3Instructions = false;
 let family;
@@ -20,11 +23,12 @@ let familySpeed = 2;
 let familyDirection = 1;
 let familyMinX, familyMaxX;
 let survivalTimer = 0; //track start time  of level 3
-let state8StartTime = 0;//tracks when state 6 starts
-let state8Duration = 4000; //5 seconds in milliseconds
-let state9StartTime = 0;//tracks when state 7 starts
-let state9Duration = 7000; //5 seconds in milliseconds
-
+let state10StartTime = 0;//tracks when state 6 starts
+let state10Duration = 4000; //5 seconds in milliseconds
+let state11StartTime = 0;//tracks when state 7 starts
+let state11Duration = 7000; //5 seconds in milliseconds
+let state12StartTime = 0;
+let state12Duration = 7000;
 
 
 function setup() {
@@ -136,7 +140,9 @@ function draw() {
 
 	switch (state) {
 		case 0:
+		case 1:
 			//level 1 intro screen
+
 			if (showInstructions) {
 				textAlign(CENTER, CENTER);
 				textSize(width * 0.08);
@@ -148,16 +154,15 @@ function draw() {
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
 				text("Press the space bar to start.", width / 2, height / 2 + 80);
 			}
-			
 			break;
 
-		case 1:
+		case 2:
 			ballMovement();
 			camera.x = ball.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
 
-		case 2:
+		case 3:
 			background('skyblue');
 			textAlign(CENTER, CENTER);
 			textSize(48);
@@ -167,15 +172,30 @@ function draw() {
 			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
 
 			//check if 5 seconds have passed
-			if (millis() - state2StartTime >= state2Duration) {
-				state = 3;
-				floorlvl2.visible = true;
-				resetForState3(); //reset ball for state 3
+			if (millis() - state3StartTime >= state3Duration) {
+				state = 4;
+				//floorlvl2.visible = true;
+				//resetForState3(); //reset ball for state 3
 				
 			}
 			break;
+		case 4:
+			background('white');
+			//"hey man..."
+			text ("x",  width / 2, height / 2);
+			//check if 5 seconds have passed
+			if (state4StartTime === 0) {
+				state4StartTime = millis(); // Record the time when state 6 starts
+			}
+			//check if 5 seconds have passed
+			if (millis() - state4StartTime >= state4Duration) {
+				state = 5;
+				floorlvl2.visible = true;
+			}
+			break;
 
-		case 3:
+		case 5:
+			//LVL 2 INSTRUCTIONS
 			background('skyblue');
 			textAlign(CENTER, CENTER);
 				textSize(width * 0.08);
@@ -188,9 +208,13 @@ function draw() {
 				text("Soulmates will distract you from making money.", width / 2, height / 2 + 80);
 				text("Press the space bar to start.", width / 2, height / 2 + 120);
 				
-		case 4:
-			if (floorlvl2.visible) floorlvl2.draw();
-			
+				
+		case 6:
+			//LVL 2 GAME PLAY
+
+			if (floorlvl2.visible) {
+				 floorlvl2.draw();
+			};
 			//make the player ball reappear
 			ball.visible = true;
 			ball.active = true;
@@ -209,7 +233,7 @@ function draw() {
 		
 
 			//check if  ball collides w any obstacles
-			ball.overlaps(heartobstacles, resetState3);
+			ball.overlaps(heartobstacles, resetForState6);
 
 			//check if ball reaches flag
 			ball.overlaps(flaglvl2, winLevel2);
@@ -217,7 +241,7 @@ function draw() {
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
 
-		case 5:
+		case 7:
 			background('skyblue');
 			textAlign(CENTER, CENTER);
 			textSize(48);
@@ -227,18 +251,19 @@ function draw() {
 			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
 
 			// Ensure state4StartTime is set when entering state 4
-			if (state5StartTime === 0) {
-				state5StartTime = millis(); // Record the time when state 4 starts
+			if (state7StartTime === 0) {
+				state7StartTime = millis(); // Record the time when state 4 starts
 			}
 			
-			if (millis() - state5StartTime >= state5Duration) {
-				state = 6;
+			if (millis() - state7StartTime >= state7Duration) {
+				state = 8;
 				survivalTime = 0; // Reset survival time counter
 				resetLevel3();
 			}
 			break;
 
-		case 6:
+		case 8:
+			//LVL 3 INSTRUCTIONS
 			textAlign(CENTER, CENTER);
 			textSize(width * 0.08);
 			fill(0);
@@ -251,7 +276,8 @@ function draw() {
 			text("Win this level by surviving 10 seconds without contacting your family.", width / 2, height / 2 + 100);
 			
 			
-		case 7:
+		case 9:
+			//LVL 3 GAMEPLAY
 
 			background('skyblue'); // Clear the screen for each frame
 
@@ -294,7 +320,7 @@ function draw() {
 
             // Check if 10 seconds have passed
     		if (survivalTime >= 10) {
-       			 state = 8; // Move to state 6
+       			 state = 10; // Move to state 6
 				 winLevel3();
     		}
 
@@ -303,7 +329,9 @@ function draw() {
 			camera.y = height * 0.5;
             break;
 
-		case 8:
+		case 10:
+			//REWARD 4 LVL 3
+
 			background('skyblue');
 			textAlign(CENTER, CENTER);
 			textSize(48);
@@ -313,31 +341,48 @@ function draw() {
 			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
 
 			// Ensure state6StartTime is set when entering state 6
-			if (state8StartTime === 0) {
-				state8StartTime = millis(); // Record the time when state 6 starts
+			if (state10StartTime === 0) {
+				state10StartTime = millis(); // Record the time when state 6 starts
 			}
 			//check if 5 seconds have passed
-			if (millis() - state8StartTime >= state8Duration) {
-				state = 9;
+			if (millis() - state10StartTime >= state10Duration) {
+				state = 11;
 			}
 			break;
-		case 9:
+		case 11:
+			//REALIZATION
+
 			background('skyblue');
 			textAlign(CENTER, CENTER);
 			textSize(48);
 			fill(0);
-			text("u died anyways bc of old age now ur items haunt u", width / 2, height / 2);
+			text("u are now 80...", width / 2, height / 2);
 			textSize(32);
 
 			// Ensure state7StartTime is set when entering state 6
-			if (state9StartTime === 0) {
-				state9StartTime = millis(); // Record the time when state 6 starts
+			if (state11StartTime === 0) {
+				state11StartTime = millis(); // Record the time when state 6 starts
 			}
-			if (millis() - state9StartTime >= state9Duration) {
-				state = 10;
+			if (millis() - state11StartTime >= state11Duration) {
+				state = 12;
 			}
 			break;
-		case 10:
+		case 12:
+			//U DIE
+			background('skyblue');
+			textAlign(CENTER, CENTER);
+			textSize(48);
+			fill(0);
+			text("u die lol", width / 2, height / 2);
+			textSize(32);
+			if (state12StartTime === 0) {
+				state12StartTime = millis(); // Record the time when state 6 starts
+			}
+			if (millis() - state12StartTime >= state12Duration) {
+				state = 13;
+			}
+			break;
+		case 13:
 			background('red');
 			break;
 	}
@@ -349,8 +394,8 @@ function keyPressed() {
 	// Check if an space bar is pressed to start the level
 	if (keyCode === 32) { // 32 is the keyCode for the space bar
         showInstructions = false; // Hide the instructions
-        state = 1; // Move to the actual level gameplay
-		lvl3Instructions.visible = false;
+        state = 2; // Move to the actual level gameplay
+		//lvl3Instructions.visible = false;
     }
 }
 
@@ -403,7 +448,7 @@ function collect(ball, thirdDots) {
 
 function winLevel() {
 	log("winlevel")
-	state = 2;//move to win state
+	state = 3;//move to win state
 
 	// Remove everything from level 1
 	ball.visible = false;
@@ -417,7 +462,7 @@ function winLevel() {
 }
 
 	// Reset function to prepare for state 3
-function resetForState3() {
+function resetForState6() {
     // Reset ball properties
     ball.visible = true;
     ball.x = 50; // Reset to initial position
@@ -427,16 +472,16 @@ function resetForState3() {
 }
 
 function winLevel2() {
-	state = 5;
+	state = 7;
 	ball.visible = false;
 	heartobstacles.forEach(heartobstacle => heartobstacle.remove());
 	flaglvl2.remove();
 	floorlvl2.remove();
 }
 
-function resetState3() {
-	resetForState3();
-}
+//function resetState3() {
+	//resetForState3();
+//}
 
 function resetLevel3() {
     // Reset the level if the ball touches the family sprite
@@ -461,7 +506,7 @@ function handleCollision() {
 }
 
 function winLevel3() {
-	state = 8;
+	state = 10;
 
 	//remove sprites
 	ball.visible = false;
