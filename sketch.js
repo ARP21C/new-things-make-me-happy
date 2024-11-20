@@ -56,6 +56,7 @@ function setup() {
 	ball.color = 'red';
 	ball.x = width * 0.1; // Starting position
 	ball.y = height * 0.75;
+	ball.visible = false;
  
 
 	camera.active = false;
@@ -68,6 +69,7 @@ function setup() {
 		floors.push(new Sprite(600, height * 0.95, 200, 5, 'static'));
 		floors.push(new Sprite(850, height * 0.8, 200, 5, 'static'));
 		floors.push(new Sprite(1200, height * 0.95, 300, 5, 'static'));
+		floors.visible = false;
 
 		dots = new Group();
 		// Add dots to the group above the first floor
@@ -110,6 +112,7 @@ function setup() {
 			floorlvl2 = new Sprite(40, height * 0.95, 4000, 5, 'static');
 			floorlvl2.autodraw = false;
 			floorlvl2.visible = false;
+			floorlvl2.collider = 'none';
 
 			heartobstacles = new Group();
 			flaglvl2 = new Sprite (2000,height * 0.88,30,80, 'static');
@@ -130,6 +133,7 @@ function setup() {
 			floorlvl3 = new Sprite(width * 0.5, height * 0.95, width * 1, 5, 'static');
 			floorlvl3.visible = false;
 			floorlvl3.autodraw = false;
+			floorlvl3.collider = 'none';
 
 			//create a family sprite that moves randomly
 			family = new Sprite();
@@ -175,6 +179,32 @@ function draw() {
 
 	switch (state) {
 		case 0:
+			background('white');
+			// Set up text styling for the text
+			textFont('Arial'); // You can change this to any font you prefer
+
+			// Set color for "Welcome to:"
+			fill(0); // Black color
+			textSize(width * 0.05); // Medium text size based on screen width
+			text("welcome to:", width * 0.33, height * 0.3); // Position at 1/3 of the width and a bit below the top
+
+			// Set color for "NEW THINGS MAKE ME HAPPY"
+			fill(0, 255, 0); // Bright light green
+			stroke(0); // Black stroke
+			strokeWeight(2); // Thin stroke
+			textSize(width * 0.1); // Very large text size
+			text("NEW THINGS MAKE ME HAPPY", width * 0.33, height * 0.5); // Centered text, taking up two lines
+
+			// Set up text for "A game celebrating the thrills of capitalism!"
+			fill(0); // Black color
+			textSize(width * 0.04); // Slightly smaller than "Welcome to:"
+			text("A game celebrating the thrills of capitalism!", width * 0.5, height * 0.65); // Centered text below the first part
+
+			// Set up text for "(Press space to start)"
+			fill(0); // Black color
+			textSize(width * 0.03); // Smaller text size
+			text("(Press space to start)", width * 0.5, height * 0.75); // Centered at the bottom
+			break;
 		case 1:
 			//level 1 intro screen
 			background('skyblue');
@@ -194,8 +224,9 @@ function draw() {
 
 		case 2:
 			background('skyblue');
+			ball.visible = true;  
 			ballMovement();
-			
+			floors.visible = true;
 			camera.x = ball.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
@@ -261,6 +292,7 @@ function draw() {
 			ballMovement();
 			floorlvl2.visible = true;
 			 floorlvl2.draw();
+			 
 			
 			//make the player ball reappear
 			ball.visible = true;
