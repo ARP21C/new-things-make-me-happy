@@ -2,6 +2,7 @@ let state = 0
 let ball;
 let floors = [];
 let showInstructions = true;
+let showLvl2Instructions = true;
 let dots, secondDots, thirdDots;
 const dotCount = 6;
 let score = 0;
@@ -29,6 +30,9 @@ let state11StartTime = 0;//tracks when state 7 starts
 let state11Duration = 7000; //5 seconds in milliseconds
 let state12StartTime = 0;
 let state12Duration = 7000;
+let lvl4Player;
+let belt, car, house;
+//let beltStart, carStart, houseStart;
 
 
 function setup() {
@@ -130,7 +134,34 @@ function setup() {
 			familyMinX = floorlvl3.x - (floorlvl3.width / 2) + (family.size / 2); // Left edge
 			familyMaxX = floorlvl3.x + (floorlvl3.width / 2) - (family.size / 2); // Right edge
 
-	
+		//LEVEL 4 SPRITES BELOW
+			lvl4Player = new Sprite(width/2, height/2, 40, 40);
+			lvl4Player.autodraw = false;
+			lvl4Player.visible = false;
+
+			//beltStart = createVector(100, 100);
+  			belt = new Sprite(width/2, height/2, 30, 30);
+			belt.color = 'green';
+			belt.speed = 2;
+			belt.vel.set(random(-1, 1), random(-1, 1));
+			belt.autodraw = false;
+			belt.visible = false;
+
+			//carStart = createVector(300, 200);
+			car = new Sprite(width/2, height/2, 90, 90);
+			car.color = 'red';
+			car.speed = 2;
+			car.vel.set(random(-1, 1), random(-1, 1));
+			car.autodraw = false;
+			car.visible = false;
+
+			//houseStart = createVector(500, 400);
+			house = new Sprite(width/2, height/2, 30, 30);
+			house.color = 'purple';
+			house.speed = 2;
+			house.vel.set(random(-1, 1), random(-1, 1));
+			house.autodraw = false;
+			house.visible = false;
 }
 
 function draw() {
@@ -142,7 +173,8 @@ function draw() {
 		case 0:
 		case 1:
 			//level 1 intro screen
-
+			background('skyblue');
+			
 			if (showInstructions) {
 				textAlign(CENTER, CENTER);
 				textSize(width * 0.08);
@@ -157,6 +189,7 @@ function draw() {
 			break;
 
 		case 2:
+			background('skyblue');
 			ballMovement();
 			camera.x = ball.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
@@ -172,6 +205,10 @@ function draw() {
 			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
 
 			//check if 5 seconds have passed
+			if (state3StartTime === 0) {
+				state3StartTime = millis(); // Record the time when state 4 starts
+			}
+			
 			if (millis() - state3StartTime >= state3Duration) {
 				state = 4;
 				//floorlvl2.visible = true;
@@ -197,7 +234,10 @@ function draw() {
 		case 5:
 			//LVL 2 INSTRUCTIONS
 			background('skyblue');
-			textAlign(CENTER, CENTER);
+			
+			if (showLvl2Instructions) {
+			
+				textAlign(CENTER, CENTER);
 				textSize(width * 0.08);
 				fill(0);
 				text("Level 2: Love Barriers", width / 2, height / 3);
@@ -207,10 +247,12 @@ function draw() {
 				text("Beat the level by making it to the finish line while avoiding all of the potential love you could find!", width / 2, height / 2 + 40);
 				text("Soulmates will distract you from making money.", width / 2, height / 2 + 80);
 				text("Press the space bar to start.", width / 2, height / 2 + 120);
-				
+			}
+				break;
 				
 		case 6:
 			//LVL 2 GAME PLAY
+			background('skyblue');
 
 			if (floorlvl2.visible) {
 				 floorlvl2.draw();
@@ -384,18 +426,43 @@ function draw() {
 			break;
 		case 13:
 			background('red');
+			//LVL 4 INSTRUCTIONS
 			break;
+		case 14:
+			//LVL 4 GAMEPLAY
+			noGravity();
+			lvl4Player.draw();
+			belt.draw();
+			house.draw();
+			car.draw();
+			lvl4Player.visible = true;
+			belt.visible = true;
+			house.visible = true;
+			car.visible = true;
 	}
 	
 }
 
 
 function keyPressed() {
-	// Check if an space bar is pressed to start the level
-	if (keyCode === 32) { // 32 is the keyCode for the space bar
-        showInstructions = false; // Hide the instructions
-        state = 2; // Move to the actual level gameplay
-		//lvl3Instructions.visible = false;
+    // Check if the space bar is pressed
+    if (keyCode === 32) { // 32 is the keyCode for the space bar
+		if (state === 0) {
+			state = 1;
+		} else if (state === 1) { 
+            // Transition from instructions (state 1) to level gameplay (state 2)
+            showInstructions = false; // Hide the instructions
+            state = 2; // Move to level gameplay
+        } else if (state === 5) {
+			showLvl2Instructions = false;
+			state = 6;
+		}
+         else if (state === 8) {
+			state = 9;
+		} else if (state === 13) {
+			state = 14;
+		}
+		
     }
 }
 
