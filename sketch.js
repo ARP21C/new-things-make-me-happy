@@ -69,9 +69,14 @@ function setup() {
 		floors.push(new Sprite(600, height * 0.95, 200, 5, 'static'));
 		floors.push(new Sprite(850, height * 0.8, 200, 5, 'static'));
 		floors.push(new Sprite(1200, height * 0.95, 300, 5, 'static'));
-		floors.visible = false;
+		
+		// Set visibility to false for all floor sprites
+		for (let i = 0; i < floors.length; i++) {
+			floors[i].visible = false;
+		  }
 
 		dots = new Group();
+		
 		// Add dots to the group above the first floor
 		for (let i = 0; i < dotCount; i++) {
 			let dot = new Sprite((i * 30) + 40, height * 0.9, 10, 10, 'static'); // Positioning the dots above the first floor
@@ -220,6 +225,10 @@ function draw() {
 				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
 				text("Press the space bar to start.", width / 2, height / 2 + 80);
 			}
+			// Set visibility to false for all floor sprites
+		for (let i = 0; i < floors.length; i++) {
+			floors[i].visible = true;
+		  }
 			break;
 
 		case 2:
