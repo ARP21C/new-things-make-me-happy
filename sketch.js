@@ -56,6 +56,7 @@ function setup() {
 	ball.color = 'red';
 	ball.x = width * 0.1; // Starting position
 	ball.y = height * 0.75;
+ 
 
 	camera.active = false;
 
@@ -194,6 +195,7 @@ function draw() {
 		case 2:
 			background('skyblue');
 			ballMovement();
+			
 			camera.x = ball.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
@@ -251,20 +253,20 @@ function draw() {
 				text("Soulmates will distract you from making money.", width / 2, height / 2 + 80);
 				text("Press the space bar to start.", width / 2, height / 2 + 120);
 			}
-				break;
+			break;
 				
 		case 6:
 			//LVL 2 GAME PLAY
 			background('skyblue');
-
-			if (floorlvl2.visible) {
-				 floorlvl2.draw();
-			};
+			ballMovement();
+			floorlvl2.visible = true;
+			 floorlvl2.draw();
+			
 			//make the player ball reappear
 			ball.visible = true;
 			ball.active = true;
 			
-			ballMovement();
+			
 			
 			// Draw heart obstacles and flag for Level 2
 
