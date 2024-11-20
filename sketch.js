@@ -44,6 +44,14 @@ let houseSpeed = 2;
 let houseDirectionX = 1;
 let houseDirectionY = 1;
 
+//PRELOAD STUFF
+let font;
+
+function preload() {
+	// Load the font file
+	//font = loadFont('assets/Copyduck.ttf');
+  }
+
 
 function setup() {
 	new Canvas(windowWidth, windowHeight);
@@ -115,6 +123,7 @@ function setup() {
 			//create the flag at the end of the level
 			flag = new Sprite(1200, height * 0.88, 30, 80, 'static');
 			flag.color = 'purple';
+			flag.visible = false;
 
 			//enable ball and flag collision check
 			ball.overlaps(flag, winLevel);
@@ -202,6 +211,7 @@ function draw() {
 			text("welcome to:", width * 0.1, height * 0.3); // Position at 1/3 of the width and a bit below the top
 
 			// Set color for "NEW THINGS MAKE ME HAPPY"
+			textFont('font');
 			fill(0, 255, 0); // Bright light green
 			stroke(0); // Black stroke
 			strokeWeight(2); // Thin stroke
@@ -209,6 +219,7 @@ function draw() {
 			text("NEW THINGS\nMAKE ME HAPPY", width * 0.1, height * 0.5); 
 
 			// Set up text for "A game celebrating the thrills of capitalism!"
+			textFont('Arial');
 			textAlign(CENTER,CENTER);
 			strokeWeight(0);
 			fill(0); // Black color
@@ -228,12 +239,11 @@ function draw() {
 				textAlign(CENTER, CENTER);
 				textSize(width * 0.08);
 				fill(0);
-				text("Level 1: Gold Rush Valley", width / 2, height / 3);
+				text("Level 1: Gold Rush Valley", width / 2, height / 3.5);
 
-				textSize(width * 0.025);
-				text("Use the arrow keys to control your player in attempts to collect as much money as you can.", width / 2, height / 2);
-				text("Beat the level by making it to the finish line and at the end of the level you will receive a reward from the money you made!", width / 2, height / 2 + 40);
-				text("Press the space bar to start.", width / 2, height / 2 + 80);
+				textSize(20);
+				text("Use the arrow keys to control your player.\nBeat the level by reaching the flag.\nTry to collect as much money as you can!\nCollect more money for a better designer item.\nThis is important because how many expensive things\n you have determines your happiness.\n(Press space to start.)", width / 2, height / 2.5 );
+				
 			}
 			// Set visibility to false for all floor sprites
 		for (let i = 0; i < floors.length; i++) {
@@ -247,6 +257,7 @@ function draw() {
 			ball.visible = true;  
 			ballMovement();
 			floors.visible = true;
+			flag.visible = true;
 			camera.x = ball.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
@@ -257,7 +268,7 @@ function draw() {
 			textSize(48);
 			fill(0);
 			text("Congrats!", width / 2, height / 2);
-			textSize(32);
+			textSize(24);
 			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
 
 			//check if 5 seconds have passed
