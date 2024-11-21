@@ -3,7 +3,7 @@ let ball;
 let floors = [];
 let showInstructions = true;
 let showLvl2Instructions = true;
-let dots, secondDots, thirdDots;
+let dots, secondDots, thirdDots, fourthDots;
 const dotCount = 6;
 let score = 0;
 let flag;
@@ -72,9 +72,9 @@ function setup() {
 
 		//create lvl1 platforms
 		floors.push(new Sprite(width * 0.05, height * 0.95, 300, 5, 'static'));
-		floors.push(new Sprite(width * .25, height * 0.8, 200, 5, 'static'));
-		floors.push(new Sprite(width * .5, height * 0.95, 200, 5, 'static'));
-		floors.push(new Sprite(width * .7, height * 0.8, 200, 5, 'static'));
+		floors.push(new Sprite(width * .25, height * 0.8, 300, 5, 'static'));
+		floors.push(new Sprite(width * .5, height * 0.95, 300, 5, 'static'));
+		floors.push(new Sprite(width * .7, height * 0.8, 300, 5, 'static'));
 		floors.push(new Sprite(width * .95, height * 0.95, 300, 5, 'static')); 
 		
 		// Set visibility to false for all floor sprites
@@ -86,41 +86,55 @@ function setup() {
 		
 		// Add dots to the group above the first floor
 		for (let i = 0; i < dotCount; i++) {
-			let dot = new Sprite((i * 30) + 40, height * 0.9, 10, 10, 'static'); // Positioning the dots above the first floor
+			let dot = new Sprite((i * 30) +40, height * 0.9, 10, 10, 'static'); // Positioning the dots above the first floor
 			dot.color = 'yellow'; // Set the color of the dots
 			dots.add(dot); // Add the dot to the dots group
 		}
 
-		dots.visible = false;
+		
 
 			// Create the second dots group
 			secondDots = new Group();
 
 			// Add dots to the group above the second floor (325, 500)
 			for (let i = 0; i < dotCount; i++) {
-				let dot = new Sprite((i * 30) + 250, height * 0.75, 10, 10, 'static'); // Positioning the dots above the second floor
+				let dot = new Sprite((i * 30) + 400, height * 0.75, 10, 10, 'static'); // Positioning the dots above the second floor
 				dot.color = 'yellow'; // Set the color of the dots
 				secondDots.add(dot); // Add the dot to the second dots group
 			}
 
-			secondDots.visible = false;
+		
 
 			//create the third group of dots
 			thirdDots = new Group();
 			//add dots above the third platform
 			for (let i = 0; i < dotCount; i++) {
-				let dot = new Sprite((i * 30) + 525, height * 0.9, 10, 10, 'static'); // Positioning the dots above the second floor
+				let dot = new Sprite((i * 30) + 900 , height * 0.9, 10, 10, 'static'); // Positioning the dots above the second floor
 				dot.color = 'yellow'; // Set the color of the dots
 				thirdDots.add(dot); // Add the dot to the second dots group
 			}
+
+			//create the fourth group of dots
+			fourthDots = new Group();
+			//add dots above the third platform
+			for (let i = 0; i < dotCount; i++) {
+				let dot = new Sprite((i * 30) + 1300 , height * 0.75, 10, 10, 'static'); // Positioning the dots above the second floor
+				dot.color = 'yellow'; // Set the color of the dots
+				fourthDots.add(dot); // Add the dot to the second dots group
+			}
+
 			ball.overlaps(dots, collect);
 			ball.overlaps(secondDots, collect);
 			ball.overlaps(thirdDots, collect);
+			ball.overlaps(fourthDots, collect);
 
-			thirdDots.visible = false;
+			dots.forEach(dot => dot.visible = false);
+			secondDots.forEach(dot => dot.visible = false);
+			thirdDots.forEach(dot => dot.visible = false);
+			fourthDots.forEach(dot => dot.visible = false);
 
 			//create the flag at the end of the level
-			flag = new Sprite(1200, height * 0.88, 30, 80, 'static');
+			flag = new Sprite(width * .95, height * 0.88, 30, 80, 'static');
 			flag.color = 'purple';
 			flag.visible = false;
 
@@ -260,8 +274,16 @@ function draw() {
 			break;
 
 		case 2:
+			//LVL 1 GAME PLAY
 			background('white'); 
-			ball.visible = true;  
+
+			//visibility
+			ball.visible = true; 
+			// Set visibility for all dot groups
+			dots.forEach(dot => dot.visible = true);
+			secondDots.forEach(dot => dot.visible = true);
+			thirdDots.forEach(dot => dot.visible = true);
+			fourthDots.forEach(dot => dot.visible = true);
 			// Set visibility to false for all floor sprites
 		for (let i = 0; i < floors.length; i++) {
 			floors[i].visible = true;
