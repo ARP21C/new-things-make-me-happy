@@ -51,6 +51,7 @@ let pic2;
 let pic3;
 let pic4;
 let pic5;
+let pic6;
 
 
 function preload() {
@@ -58,6 +59,7 @@ function preload() {
     pic3 = loadImage("assets/vgpic3.webp"); // Ensure you provide the correct path to your image
 	pic4 = loadImage("assets/vgpic4.png");
 	pic5 = loadImage("assets/vgpic5.png");
+	
 }
 
 function setup() {
@@ -374,8 +376,14 @@ function draw() {
 			break;
 		case 4:
 			background('white');
+			image(pic3, width * .2, height / 2);
+			strokeWeight(0);
 			//"hey man..."
-			text ("x",  width / 2, height / 2);
+			strokeWeight(0);
+			textAlign(CENTER, CENTER);
+			textSize(24);
+			fill(0);
+			text("Hey man, this belt made me realize\nmoney IS the point of life.\nMoney allows me to buy expensive\nbrand name items that make me\ncooler than everyone else and get\nattention from the ladiesssss.", width /2 , height / 2);
 			//check if 5 seconds have passed
 			if (state4StartTime === 0) {
 				state4StartTime = millis(); // Record the time when state 6 starts
