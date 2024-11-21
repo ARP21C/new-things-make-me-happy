@@ -45,13 +45,11 @@ let houseDirectionX = 1;
 let houseDirectionY = 1;
 
 //PRELOAD STUFF
-let font;
+let font1;
+let pic1;
 
-function preload() {
-	// Load the font file
-	//font = loadFont('assets/Copyduck.ttf');
-  }
 
+  
 
 function setup() {
 	new Canvas(windowWidth, windowHeight);
@@ -191,6 +189,10 @@ function setup() {
  			 house = new Sprite(width * 0.2, height * 0.5, 30, 30);
 			house.autodraw = false;
 			house.visible = false; 
+
+		//PRELOADING
+			font1 = loadFont("assets/Copyduck.ttf");
+			pic1 = loadImage("assets/VG pic 1.png");
 }
 
 function draw() {
@@ -211,12 +213,12 @@ function draw() {
 			text("welcome to:", width * 0.1, height * 0.3); // Position at 1/3 of the width and a bit below the top
 
 			// Set color for "NEW THINGS MAKE ME HAPPY"
-			textFont('font');
+			textFont(font1);
 			fill(0, 255, 0); // Bright light green
 			stroke(0); // Black stroke
 			strokeWeight(2); // Thin stroke
-			textSize(100); // Very large text size
-			text("NEW THINGS\nMAKE ME HAPPY", width * 0.1, height * 0.5); 
+			textSize(150); // Very large text size
+			text("NEW THINGS\nMAKE ME HAPPY", width * 0.1, height * 0.45); 
 
 			// Set up text for "A game celebrating the thrills of capitalism!"
 			textFont('Arial');
@@ -230,6 +232,8 @@ function draw() {
 			fill(0); // Black color
 			textSize(20); // Smaller text size
 			text("(Press space to start)", width * 0.5, height * 0.9); // Centered at the bottom
+
+			image(pic1, (2/3) * width, height / 95, 500, 500);
 			break;
 		case 1:
 			//level 1 intro screen
