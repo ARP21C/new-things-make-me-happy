@@ -49,11 +49,13 @@ let font1;
 let pic1;
 let pic2;
 let pic3;
+let pic4;
 
 
 function preload() {
     // Load the image before setup
     pic3 = loadImage("assets/vgpic3.webp"); // Ensure you provide the correct path to your image
+	pic4 = loadImage("assets/vgpic4.png");
 }
 
 function setup() {
@@ -63,13 +65,13 @@ function setup() {
 
 	// Create the player ball
 	ball = new Sprite();
-	ball.diameter = 25;
 	ball.addImage(pic3);
 	ball.x = width * 0.1; // Starting position
 	ball.y = height * 0.75;
 	ball.visible = false;
 	ball.rotation = 0; // Prevent rotation
   	ball.angularVelocity = 0; // Ensure no angular velocity
+	ball.scale = 0.5;
  
 
 	camera.active = false;
@@ -151,7 +153,7 @@ function setup() {
 
 			//create the flag at the end of the level
 			flag = new Sprite(width * .95, height * 0.88, 30, 80, 'static');
-			flag.color = 'purple';
+			flag.addImage(pic4);
 			flag.visible = false;
 
 			//enable ball and flag collision check
@@ -165,16 +167,18 @@ function setup() {
 			floorlvl2.collider = 'none';
 
 			heartobstacles = new Group();
-			flaglvl2 = new Sprite (2000,height * 0.88,30,80, 'static');
+			flaglvl2 = new Sprite (2000,height * 0.88,30,80);
 			flaglvl2.color = green;
 			flaglvl2.autodraw = false; //hidden until state 3
 			flaglvl2.visible = false;
+			heartobstacles.collider = 'none';
 			
 
 			for (let i = 0; i < 5; i++) {
-				let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 30, 30, 'static');
+				let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 30, 30);
 				heartobstacle.autodraw = false;
 				heartobstacle.visible = false;
+				heartobstacle.collider = 'none';
 				heartobstacles.add(heartobstacle);
 			}
 
@@ -190,7 +194,7 @@ function setup() {
 			family.size = width * 0.1;
 			family.x = width * 0.3;
 			family.y = height * 0.9;
-			family.collider = 'dynamic';
+			family.collider = 'none';
 
 			family.visible = false;
 			family.autodraw = false;
@@ -201,31 +205,56 @@ function setup() {
 
 		//LEVEL 4 SPRITES BELOW
 			 // Create player sprite
-  			playerLvl4 = new Sprite(width / 2, height / 2, 40, 40, 'dynamic'); // Positioned at center
+  			playerLvl4 = new Sprite(width / 2, height / 2, 40, 40); // Positioned at center
 			playerLvl4.autodraw = false;
 			playerLvl4.visible = false;
+			playerLvl4.collider = 'none';
 
 			
   			// Create the "belt" sprite
   			belt = new Sprite(width * 0.1, height * 0.9, 30, 30);
 			belt.autodraw = false;
 			belt.visible = false; 
+			belt.collider = 'none';
 
 			//create the "car" sprite
 			car = new Sprite(width * 0.5, height * 0.3, 30, 30);
 			car.autodraw = false;
 			car.visible = false; 
+			car.collider = 'none';
 
 			// Create the "house" sprite
  			 house = new Sprite(width * 0.2, height * 0.5, 30, 30);
 			house.autodraw = false;
 			house.visible = false; 
+			house.collider = 'none';
 
 		//PRELOADING
 			font1 = loadFont("assets/Copyduck.ttf");
 			pic1 = loadImage("assets/VG pic 1.png");
 			pic2 = loadImage("assets/vgpic2.jpg");
 			
+}
+// Function for ball movement with arrow keys
+function ballMovement() {
+	// Reset angular velocity and rotation
+	ball.rotation = 0;
+	ball.angularVelocity = 0;
+   // Move the ball left and right
+   if (keyIsDown(LEFT_ARROW)) {
+	   ball.x -= 5; // Move left
+   }
+   if (keyIsDown(RIGHT_ARROW)) {
+	   ball.x += 5; // Move right
+   }
+   // Jump if the ball is on the floor
+   if (keyIsDown(UP_ARROW)) { // Change this condition as needed to check if on the floor
+	   ball.vel.y = -15; // Jump velocity
+   }
+
+   // Apply gravity
+   ball.vel.y += 0.5; // Gravity effect
+   //ball.y += ball.vel.y; // Update ball's vertical position
 }
 
 function draw() {
@@ -641,28 +670,9 @@ function keyPressed() {
     }
 }
 
-// Function for ball movement with arrow keys
-function ballMovement() {
-	 // Reset angular velocity and rotation
-	 ball.rotation = 0;
-	 ball.angularVelocity = 0;
-	// Move the ball left and right
-	if (keyIsDown(LEFT_ARROW)) {
-		ball.x -= 5; // Move left
-	}
-	if (keyIsDown(RIGHT_ARROW)) {
-		ball.x += 5; // Move right
-	}
-	// Jump if the ball is on the floor
-	if (keyIsDown(UP_ARROW)) { // Change this condition as needed to check if on the floor
-		ball.vel.y = -15; // Jump velocity
-	}
 
-	// Apply gravity
-	ball.vel.y += 0.5; // Gravity effect
-	//ball.y += ball.vel.y; // Update ball's vertical position
 
-}
+
 // Function to check for dot collection
 function collectDots() {
 	// Create a copy of the dots array to avoid modifying it while iterating
