@@ -47,6 +47,7 @@ let houseDirectionY = 1;
 //PRELOAD STUFF
 let font1;
 let pic1;
+let pic2;
 
 
   
@@ -71,10 +72,10 @@ function setup() {
 
 		//create lvl1 platforms
 		floors.push(new Sprite(width * 0.05, height * 0.95, 300, 5, 'static'));
-		floors.push(new Sprite(325, height * 0.8, 200, 5, 'static'));
-		floors.push(new Sprite(600, height * 0.95, 200, 5, 'static'));
-		floors.push(new Sprite(850, height * 0.8, 200, 5, 'static'));
-		floors.push(new Sprite(1200, height * 0.95, 300, 5, 'static'));
+		floors.push(new Sprite(width * .25, height * 0.8, 200, 5, 'static'));
+		floors.push(new Sprite(width * .5, height * 0.95, 200, 5, 'static'));
+		floors.push(new Sprite(width * .7, height * 0.8, 200, 5, 'static'));
+		floors.push(new Sprite(width * .95, height * 0.95, 300, 5, 'static')); 
 		
 		// Set visibility to false for all floor sprites
 		for (let i = 0; i < floors.length; i++) {
@@ -193,6 +194,7 @@ function setup() {
 		//PRELOADING
 			font1 = loadFont("assets/Copyduck.ttf");
 			pic1 = loadImage("assets/VG pic 1.png");
+			pic2 = loadImage("assets/vgpic2.jpg");
 }
 
 function draw() {
@@ -237,28 +239,33 @@ function draw() {
 			break;
 		case 1:
 			//level 1 intro screen
-			background('skyblue');
+			background('white');
+			image(pic2, 0, 0, width, height);
 			
 			if (showInstructions) {
 				textAlign(CENTER, CENTER);
-				textSize(width * 0.08);
-				fill(0);
+				textSize(width * 0.07 );
+				stroke(0);
+				strokeWeight(3); 
+				fill(255, 215, 0);
+				textFont(font1);
 				text("Level 1: Gold Rush Valley", width / 2, height / 3.5);
 
+				textFont('Arial');
 				textSize(20);
 				text("Use the arrow keys to control your player.\nBeat the level by reaching the flag.\nTry to collect as much money as you can!\nCollect more money for a better designer item.\nThis is important because how many expensive things\n you have determines your happiness.\n(Press space to start.)", width / 2, height / 2.5 );
 				
 			}
-			// Set visibility to false for all floor sprites
-		for (let i = 0; i < floors.length; i++) {
-			floors[i].visible = true;
-		
-		  }
+			
 			break;
 
 		case 2:
-			background('skyblue');
+			background('white'); 
 			ball.visible = true;  
+			// Set visibility to false for all floor sprites
+		for (let i = 0; i < floors.length; i++) {
+			floors[i].visible = true;
+		  }
 			ballMovement();
 			floors.visible = true;
 			flag.visible = true;
