@@ -54,11 +54,13 @@ let pic5;
 let pic6;
 
 
+
 function preload() {
     // Load the image before setup
     pic3 = loadImage("assets/vgpic3.webp"); // Ensure you provide the correct path to your image
 	pic4 = loadImage("assets/vgpic4.png");
 	pic5 = loadImage("assets/vgpic5.png");
+	pic6 = loadImage("assets/vgpic6.png");
 	
 }
 
@@ -378,7 +380,6 @@ function draw() {
 			background('white');
 			image(pic3, width * .2, height / 2);
 			strokeWeight(0);
-			//"hey man..."
 			strokeWeight(0);
 			textAlign(CENTER, CENTER);
 			textSize(24);
@@ -391,40 +392,42 @@ function draw() {
 			//check if 5 seconds have passed
 			if (millis() - state4StartTime >= state4Duration) {
 				state = 5;
-				floorlvl2.visible = true;
+		
 			}
 			break;
 
 		case 5:
 			//LVL 2 INSTRUCTIONS
-			background('skyblue');
+			background('white');
 			
 			if (showLvl2Instructions) {
 			
-				textAlign(CENTER, CENTER);
-				textSize(width * 0.08);
-				fill(0);
-				text("Level 2: Love Barriers", width / 2, height / 3);
+				textSize(width * 0.07 );
+				stroke(0);
+				strokeWeight(3); 
+				fill(255, 0, 0);
+				textFont(font1);
+				text("Level 2:Love Barriers", width / 2, height / 3.5);
 
-				textSize(width * 0.025);
-				text("Use the arrow keys to control your player in attempts to avoid true love.", width / 2, height / 2);
-				text("Beat the level by making it to the finish line while avoiding all of the potential love you could find!", width / 2, height / 2 + 40);
-				text("Soulmates will distract you from making money.", width / 2, height / 2 + 80);
-				text("Press the space bar to start.", width / 2, height / 2 + 120);
+				textFont('Arial');
+				textSize(20);
+				text("Now that you've dedicated your life to becoming rich,\nyou have to avoid many distractions,\nsuch as finding true love.\nJump over the love barriers and make it\nto the finish line to be able to afford\nanother luxury item! Use the arrow keys\nto control your player and press the space bar to start.", width / 2, height / 2.5 );
 			}
 			break;
 				
 		case 6:
 			//LVL 2 GAME PLAY
-			background('skyblue');
-			ballMovement();
+			background('white');
+			image(pic6, width / 2 - pic6.width / 2, height / 2 - pic6.height / 2);
 			floorlvl2.visible = true;
 			 floorlvl2.draw();
+			 floorlvl2.collider = 'static';
 			 
 			
 			//make the player ball reappear
 			ball.visible = true;
 			ball.active = true;
+			ballMovement();
 			
 			
 			
@@ -492,9 +495,7 @@ function draw() {
 			if (floorlvl3.visible) floorlvl3.draw();
 
 			//ball reappears
-			ball.visible = true;
-			ball.active = true;
-			ballMovement();
+			ball.visible = true; 
 
 			
 			// Ensure ball stays within screen bounds
@@ -674,9 +675,11 @@ function keyPressed() {
             // Transition from instructions (state 1) to level gameplay (state 2)
             showInstructions = false; // Hide the instructions
             state = 2; // Move to level gameplay
+			
         } else if (state === 5) {
 			showLvl2Instructions = false;
 			state = 6;
+			resetForState6();
 		}
          else if (state === 8) {
 			state = 9;
@@ -740,12 +743,9 @@ function winLevel() {
 
 	// Reset function to prepare for state 3
 function resetForState6() {
-    // Reset ball properties
-    ball.visible = true;
-    ball.x = 50; // Reset to initial position
-    ball.y = 550; // Place it on the ground level or any desired starting y-coordinate
-    ball.vel.x = 0;
-    ball.vel.y = 0;
+   // Reset ball properties
+   ball.x = width * 0.1; // Starting position
+   ball.y = height * 0.75;
 }
 
 function winLevel2() {
