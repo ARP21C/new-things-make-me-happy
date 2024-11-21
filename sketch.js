@@ -50,12 +50,14 @@ let pic1;
 let pic2;
 let pic3;
 let pic4;
+let pic5;
 
 
 function preload() {
     // Load the image before setup
     pic3 = loadImage("assets/vgpic3.webp"); // Ensure you provide the correct path to your image
 	pic4 = loadImage("assets/vgpic4.png");
+	pic5 = loadImage("assets/vgpic5.png");
 }
 
 function setup() {
@@ -343,13 +345,20 @@ function draw() {
 			break;
 
 		case 3:
-			background('skyblue');
+			background('white');
+			let aspectRatio = pic5.width / pic5.height;
+			let newWidth = 500;
+			let newHeight = newWidth / aspectRatio;
+			image(pic5, (width - newWidth) / 2, (height - newHeight) / 2, newWidth, newHeight);
+			strokeWeight(0);
 			textAlign(CENTER, CENTER);
-			textSize(48);
-			fill(0);
-			text("Congrats!", width / 2, height / 2);
 			textSize(24);
-			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
+			fill(0);
+			text("You made so much money!\nNow you can buy a...", width / 2, height * 0.3);
+			textSize(50);
+			text("Gucci Belt!!!!", width / 2, height * 0.4);
+			textSize(25);
+			text("So much instant gratification!!!", width / 2, height * 0.6);
 
 			//check if 5 seconds have passed
 			if (state3StartTime === 0) {
@@ -701,6 +710,10 @@ function collect(ball, thirdDots) {
 	thirdDots.remove();
 }
 
+function collect(ball, fourthDots) {
+	fourthDots.remove();
+}
+
 function winLevel() {
 	log("winlevel")
 	state = 3;//move to win state
@@ -711,6 +724,7 @@ function winLevel() {
 	flag.remove();
 	secondDots.remove();
 	thirdDots.remove();
+	fourthDots.remove();
 	for (let floor of floors) {
 		floor.remove();
 	}
