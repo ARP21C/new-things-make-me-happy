@@ -48,9 +48,13 @@ let houseDirectionY = 1;
 let font1;
 let pic1;
 let pic2;
+let pic3;
 
 
-  
+function preload() {
+    // Load the image before setup
+    pic3 = loadImage("assets/vgpic3.webp"); // Ensure you provide the correct path to your image
+}
 
 function setup() {
 	new Canvas(windowWidth, windowHeight);
@@ -59,11 +63,13 @@ function setup() {
 
 	// Create the player ball
 	ball = new Sprite();
-	ball.diameter = 50;
-	ball.color = 'red';
+	ball.diameter = 25;
+	ball.addImage(pic3);
 	ball.x = width * 0.1; // Starting position
 	ball.y = height * 0.75;
 	ball.visible = false;
+	ball.rotation = 0; // Prevent rotation
+  	ball.angularVelocity = 0; // Ensure no angular velocity
  
 
 	camera.active = false;
@@ -219,6 +225,7 @@ function setup() {
 			font1 = loadFont("assets/Copyduck.ttf");
 			pic1 = loadImage("assets/VG pic 1.png");
 			pic2 = loadImage("assets/vgpic2.jpg");
+			
 }
 
 function draw() {
@@ -636,6 +643,9 @@ function keyPressed() {
 
 // Function for ball movement with arrow keys
 function ballMovement() {
+	 // Reset angular velocity and rotation
+	 ball.rotation = 0;
+	 ball.angularVelocity = 0;
 	// Move the ball left and right
 	if (keyIsDown(LEFT_ARROW)) {
 		ball.x -= 5; // Move left
@@ -645,7 +655,7 @@ function ballMovement() {
 	}
 	// Jump if the ball is on the floor
 	if (keyIsDown(UP_ARROW)) { // Change this condition as needed to check if on the floor
-		ball.vel.y = -5; // Jump velocity
+		ball.vel.y = -15; // Jump velocity
 	}
 
 	// Apply gravity
