@@ -79,7 +79,9 @@ function setup() {
 		
 		// Set visibility to false for all floor sprites
 		for (let i = 0; i < floors.length; i++) {
+			floors[i].color = color(255, 215, 0);
 			floors[i].visible = false;
+
 		  }
 
 		dots = new Group();
@@ -87,7 +89,9 @@ function setup() {
 		// Add dots to the group above the first floor
 		for (let i = 0; i < dotCount; i++) {
 			let dot = new Sprite((i * 30) +40, height * 0.9, 10, 10, 'static'); // Positioning the dots above the first floor
-			dot.color = 'yellow'; // Set the color of the dots
+			dot.text = "💰"; // Set the text of the dot to the money emoji
+    		dot.font = 'Arial'; // You can choose a font, but most fonts will support the emoji
+   			 dot.textSize = 24; // Adjust the size of the emoji
 			dots.add(dot); // Add the dot to the dots group
 		}
 
@@ -99,7 +103,9 @@ function setup() {
 			// Add dots to the group above the second floor (325, 500)
 			for (let i = 0; i < dotCount; i++) {
 				let dot = new Sprite((i * 30) + 400, height * 0.75, 10, 10, 'static'); // Positioning the dots above the second floor
-				dot.color = 'yellow'; // Set the color of the dots
+				dot.text = "💰"; // Set the text of the dot to the money emoji
+    			dot.font = 'Arial'; // You can choose a font, but most fonts will support the emoji
+    			dot.textSize = 24; // Adjust the size of the emoji
 				secondDots.add(dot); // Add the dot to the second dots group
 			}
 
@@ -110,7 +116,9 @@ function setup() {
 			//add dots above the third platform
 			for (let i = 0; i < dotCount; i++) {
 				let dot = new Sprite((i * 30) + 900 , height * 0.9, 10, 10, 'static'); // Positioning the dots above the second floor
-				dot.color = 'yellow'; // Set the color of the dots
+				dot.text = "💰"; // Set the text of the dot to the money emoji
+    			dot.font = 'Arial'; // You can choose a font, but most fonts will support the emoji
+    			dot.textSize = 24; // Adjust the size of the emoji
 				thirdDots.add(dot); // Add the dot to the second dots group
 			}
 
@@ -119,7 +127,9 @@ function setup() {
 			//add dots above the third platform
 			for (let i = 0; i < dotCount; i++) {
 				let dot = new Sprite((i * 30) + 1300 , height * 0.75, 10, 10, 'static'); // Positioning the dots above the second floor
-				dot.color = 'yellow'; // Set the color of the dots
+				dot.text = "💰"; // Set the text of the dot to the money emoji
+    			dot.font = 'Arial'; // You can choose a font, but most fonts will support the emoji
+   				 dot.textSize = 24; // Adjust the size of the emoji
 				fourthDots.add(dot); // Add the dot to the second dots group
 			}
 
@@ -276,6 +286,7 @@ function draw() {
 		case 2:
 			//LVL 1 GAME PLAY
 			background('white'); 
+			image(pic2, 0, 0, width, height);
 
 			//visibility
 			ball.visible = true; 
