@@ -2,7 +2,6 @@ let state = 0
 let ball;
 let floors = [];
 let showInstructions = true;
-let showLvl2Instructions = true;
 let dots, secondDots, thirdDots, fourthDots;
 const dotCount = 6;
 let score = 0;
@@ -43,6 +42,7 @@ let house;
 let houseSpeed = 2;
 let houseDirectionX = 1;
 let houseDirectionY = 1;
+
 
 //PRELOAD STUFF
 let font1;
@@ -265,7 +265,7 @@ function ballMovement() {
 
 function draw() {
 	background('skyblue');
-	
+	ballMovement();
 	
 
 	switch (state) {
@@ -341,7 +341,7 @@ function draw() {
 		for (let i = 0; i < floors.length; i++) {
 			floors[i].visible = true;
 		  }
-			ballMovement();
+			
 			floors.visible = true;
 			flag.visible = true;
 			camera.x = ball.x; // Default: camera follows the ball
@@ -392,6 +392,8 @@ function draw() {
 			//check if 5 seconds have passed
 			if (millis() - state4StartTime >= state4Duration) {
 				state = 5;
+				floorlvl2.visible = true;
+				resetForState6();
 		
 			}
 			break;
@@ -400,7 +402,6 @@ function draw() {
 			//LVL 2 INSTRUCTIONS
 			background('white');
 			
-			if (showLvl2Instructions) {
 			
 				textSize(width * 0.07 );
 				stroke(0);
@@ -412,23 +413,23 @@ function draw() {
 				textFont('Arial');
 				textSize(20);
 				text("Now that you've dedicated your life to becoming rich,\nyou have to avoid many distractions,\nsuch as finding true love.\nJump over the love barriers and make it\nto the finish line to be able to afford\nanother luxury item! Use the arrow keys\nto control your player and press the space bar to start.", width / 2, height / 2.5 );
-			}
+			
 			break;
 				
 		case 6:
 			//LVL 2 GAME PLAY
 			background('white');
+	
 			image(pic6, width / 2 - pic6.width / 2, height / 2 - pic6.height / 2);
-			floorlvl2.visible = true;
-			 floorlvl2.draw();
+			if (floorlvl2.visible) floorlvl2.draw();
 			 floorlvl2.collider = 'static';
 			 
 			
 			//make the player ball reappear
 			ball.visible = true;
 			ball.active = true;
-			ballMovement();
 			
+			ballMovement();
 			
 			
 			// Draw heart obstacles and flag for Level 2
@@ -443,7 +444,7 @@ function draw() {
 		
 
 			//check if  ball collides w any obstacles
-			ball.overlaps(heartobstacles, resetForState6);
+			ball.overlaps(heartobstacles, resetBall);
 
 			//check if ball reaches flag
 			ball.overlaps(flaglvl2, winLevel2);
@@ -677,9 +678,9 @@ function keyPressed() {
             state = 2; // Move to level gameplay
 			
         } else if (state === 5) {
-			showLvl2Instructions = false;
 			state = 6;
-			resetForState6();
+			resetBall();
+		
 		}
          else if (state === 8) {
 			state = 9;
@@ -742,11 +743,25 @@ function winLevel() {
 }
 
 	// Reset function to prepare for state 3
-function resetForState6() {
-   // Reset ball properties
-   ball.x = width * 0.1; // Starting position
-   ball.y = height * 0.75;
-}
+	function resetForState6() {
+		// Reset ball properties
+		ball.visible = true;
+		ball.x = 50; // Reset to initial position
+		ball.y = 550; // Place it on the ground level or any desired starting y-coordinate
+		ball.vel.x = 0;
+		ball.vel.y = 0;
+	}
+
+//function resetBall(x = width / 2, y = height /2) {
+   // console.log("Resetting ball to:", x, y);
+   // ball.x = x; // Use provided x or default to 50
+   // ball.y = y; // Use provided y or default to height * 0.8
+    //ball.visible = true; // Make the ball visible
+   // ball.velocity.x = 0; // Reset horizontal velocity
+    //ball.velocity.y = 0; // Reset vertical velocity
+    //ball.rotation = 0; // Reset rotation
+   // ball.angularVelocity = 0; // Reset angular velocity
+//}
 
 function winLevel2() {
 	state = 7;
