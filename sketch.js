@@ -393,7 +393,7 @@ function draw() {
 			if (millis() - state4StartTime >= state4Duration) {
 				state = 5;
 				floorlvl2.visible = true;
-				resetForState6();
+				resetBall();
 		
 			}
 			break;
@@ -680,6 +680,7 @@ function keyPressed() {
         } else if (state === 5) {
 			state = 6;
 			resetBall();
+			resetCamera();
 		
 		}
          else if (state === 8) {
@@ -742,27 +743,23 @@ function winLevel() {
 	}
 }
 
-	// Reset function to prepare for state 3
-	function resetForState6() {
-		// Reset ball properties
-		ball.visible = true;
-		ball.x = 50; // Reset to initial position
-		ball.y = 550; // Place it on the ground level or any desired starting y-coordinate
-		ball.vel.x = 0;
-		ball.vel.y = 0;
-	}
 
-//function resetBall(x = width / 2, y = height /2) {
-   // console.log("Resetting ball to:", x, y);
-   // ball.x = x; // Use provided x or default to 50
-   // ball.y = y; // Use provided y or default to height * 0.8
-    //ball.visible = true; // Make the ball visible
-   // ball.velocity.x = 0; // Reset horizontal velocity
-    //ball.velocity.y = 0; // Reset vertical velocity
-    //ball.rotation = 0; // Reset rotation
-   // ball.angularVelocity = 0; // Reset angular velocity
-//}
 
+function resetBall(x = width / 2, y = height /2) {
+    console.log("Resetting ball to:", x, y);
+   ball.x = x; // Use provided x or default to 50
+   ball.y = y; // Use provided y or default to height * 0.8
+	ball.visible = true; // Make the ball visible
+   ball.velocity.x = 0; // Reset horizontal velocity
+    ball.velocity.y = 0; // Reset vertical velocity
+    ball.rotation = 0; // Reset rotation
+    ball.angularVelocity = 0; // Reset angular velocity
+}
+function resetCamera() {
+    // Reset camera to the center of the canvas
+    camera.position.x = width / 2; 
+    camera.position.y = height / 2;
+}
 function winLevel2() {
 	state = 7;
 	ball.visible = false;
