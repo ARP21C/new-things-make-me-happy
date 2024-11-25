@@ -397,6 +397,9 @@ function draw() {
 			break;
 				
 		case 6:
+
+			//camera.on();
+
 			//LVL 2 GAME PLAY
 			background('white');
 	
