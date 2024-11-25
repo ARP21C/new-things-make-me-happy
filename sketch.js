@@ -432,7 +432,10 @@ function draw() {
 
 			//check if ball reaches flag
 			guy2.overlaps(flaglvl2, winLevel2);
-			camera.x = guy2.x; // Default: camera follows the ball
+
+			camera.active = true;
+
+			camera.position.x = guy2.x;
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
 
@@ -705,7 +708,7 @@ function lvl2Setup() {
 	
 
 	for (let i = 0; i < 5; i++) {
-		let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 100, 100);
+		let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 30, 30);
 		heartobstacle.autodraw = false;
 		heartobstacle.visible = false;
 		heartobstacle.collider = 'none';
