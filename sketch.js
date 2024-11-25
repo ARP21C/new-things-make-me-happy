@@ -1,5 +1,6 @@
 let state = 0
-let ball;
+let guy1;
+let guy2;
 let floors = [];
 let showInstructions = true;
 let dots, secondDots, thirdDots, fourthDots;
@@ -7,9 +8,9 @@ const dotCount = 6;
 let score = 0;
 let flag;
 let state3StartTime = 0;//tracks when state 2 starts
-let state3Duration = 7000; //5 seconds in milliseconds
+let state3Duration = 1000; //5 seconds in milliseconds
 let state4StartTime = 0;
-let state4Duration = 7000;
+let state4Duration = 1000;
 let floorlvl2;
 let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
@@ -70,14 +71,14 @@ function setup() {
 	world.gravity.y = 10;
 
 	// Create the player ball
-	ball = new Sprite();
-	ball.addImage(pic3);
-	ball.x = width * 0.1; // Starting position
-	ball.y = height * 0.75;
-	ball.visible = false;
-	ball.rotation = 0; // Prevent rotation
-  	ball.angularVelocity = 0; // Ensure no angular velocity
-	ball.scale = 0.5;
+	guy1 = new Sprite();
+	guy1.addImage(pic3);
+	guy1.x = width * 0.1; // Starting position
+	guy1.y = height * 0.75;
+	guy1.visible = false;
+	guy1.rotation = 0; // Prevent rotation
+  	guy1.angularVelocity = 0; // Ensure no angular velocity
+	guy1.scale = 0.5;
  
 
 	camera.active = false;
@@ -147,10 +148,10 @@ function setup() {
 				fourthDots.add(dot); // Add the dot to the second dots group
 			}
 
-			ball.overlaps(dots, collect);
-			ball.overlaps(secondDots, collect);
-			ball.overlaps(thirdDots, collect);
-			ball.overlaps(fourthDots, collect);
+			guy1.overlaps(dots, collect);
+			guy1.overlaps(secondDots, collect);
+			guy1.overlaps(thirdDots, collect);
+			guy1.overlaps(fourthDots, collect);
 
 			dots.forEach(dot => dot.visible = false);
 			secondDots.forEach(dot => dot.visible = false);
@@ -163,30 +164,9 @@ function setup() {
 			flag.visible = false;
 
 			//enable ball and flag collision check
-			ball.overlaps(flag, winLevel);
+			guy1.overlaps(flag, winLevel);
 		
-		//LEVEL 2 SPRITES BELOW
-
-			floorlvl2 = new Sprite(40, height * 0.95, 4000, 5, 'static');
-			floorlvl2.autodraw = false;
-			floorlvl2.visible = false;
-			floorlvl2.collider = 'none';
-
-			heartobstacles = new Group();
-			flaglvl2 = new Sprite (2000,height * 0.88,30,80);
-			flaglvl2.color = green;
-			flaglvl2.autodraw = false; //hidden until state 3
-			flaglvl2.visible = false;
-			heartobstacles.collider = 'none';
-			
-
-			for (let i = 0; i < 5; i++) {
-				let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 30, 30);
-				heartobstacle.autodraw = false;
-				heartobstacle.visible = false;
-				heartobstacle.collider = 'none';
-				heartobstacles.add(heartobstacle);
-			}
+		
 
 		//LEVEL 3 SPRITES BELOW
 			
@@ -244,22 +224,22 @@ function setup() {
 // Function for ball movement with arrow keys
 function ballMovement() {
 	// Reset angular velocity and rotation
-	ball.rotation = 0;
-	ball.angularVelocity = 0;
+	guy1.rotation = 0;
+	guy1.angularVelocity = 0;
    // Move the ball left and right
    if (keyIsDown(LEFT_ARROW)) {
-	   ball.x -= 5; // Move left
+	   guy1.x -= 5; // Move left
    }
    if (keyIsDown(RIGHT_ARROW)) {
-	   ball.x += 5; // Move right
+	   guy1.x += 5; // Move right
    }
    // Jump if the ball is on the floor
    if (keyIsDown(UP_ARROW)) { // Change this condition as needed to check if on the floor
-	   ball.vel.y = -15; // Jump velocity
+	   guy1.vel.y = -15; // Jump velocity
    }
 
    // Apply gravity
-   ball.vel.y += 0.5; // Gravity effect
+   guy1.vel.y += 0.5; // Gravity effect
    //ball.y += ball.vel.y; // Update ball's vertical position
 }
 
@@ -331,7 +311,7 @@ function draw() {
 			image(pic2, 0, 0, width, height);
 
 			//visibility
-			ball.visible = true; 
+			guy1.visible = true; 
 			// Set visibility for all dot groups
 			dots.forEach(dot => dot.visible = true);
 			secondDots.forEach(dot => dot.visible = true);
@@ -344,7 +324,7 @@ function draw() {
 			
 			floors.visible = true;
 			flag.visible = true;
-			camera.x = ball.x; // Default: camera follows the ball
+			camera.x = guy1.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
 
@@ -392,8 +372,8 @@ function draw() {
 			//check if 5 seconds have passed
 			if (millis() - state4StartTime >= state4Duration) {
 				state = 5;
-				floorlvl2.visible = true;
-				resetBall();
+				
+			
 		
 			}
 			break;
@@ -421,15 +401,18 @@ function draw() {
 			background('white');
 	
 			image(pic6, width / 2 - pic6.width / 2, height / 2 - pic6.height / 2);
-			if (floorlvl2.visible) floorlvl2.draw();
+			floorlvl2.draw();
+			floorlvl2.visible = true;
 			 floorlvl2.collider = 'static';
 			 
 			
 			//make the player ball reappear
-			ball.visible = true;
-			ball.active = true;
+			guy2.visible = true;
+			guy2.active = true;
+			guy2.draw();
+			guy2.collider = "dynamic";
 			
-			ballMovement();
+			guy2Movement();
 			
 			
 			// Draw heart obstacles and flag for Level 2
@@ -438,17 +421,18 @@ function draw() {
 			heartobstacles.forEach(heartobstacle => {
 				if (heartobstacle.visible) heartobstacle.draw();
 			});
+			heartobstacles.collider = "static";
 			
 			flaglvl2.visible = true;
 			if (flaglvl2.visible) flaglvl2.draw();
 		
 
 			//check if  ball collides w any obstacles
-			ball.overlaps(heartobstacles, resetBall);
+			guy2.overlaps(heartobstacles, resetguy2);
 
 			//check if ball reaches flag
-			ball.overlaps(flaglvl2, winLevel2);
-			camera.x = ball.x; // Default: camera follows the ball
+			guy2.overlaps(flaglvl2, winLevel2);
+			camera.x = guy2.x; // Default: camera follows the ball
 			camera.y = constrain(camera.y, height * 0.5, height); // Keep camera within bounds
 			break;
 
@@ -496,12 +480,12 @@ function draw() {
 			if (floorlvl3.visible) floorlvl3.draw();
 
 			//ball reappears
-			ball.visible = true; 
+			guy1.visible = true; 
 
 			
 			// Ensure ball stays within screen bounds
-            ball.x = constrain(ball.x, 0, width); // Constrain horizontal movement
-            ball.y = constrain(ball.y, 0, height); // Constrain vertical movement
+            guy1.x = constrain(guy1.x, 0, width); // Constrain horizontal movement
+            guy1.y = constrain(guy1.y, 0, height); // Constrain vertical movement
 
 			family.visible = true;
 			family.draw();
@@ -514,7 +498,7 @@ function draw() {
 			if (family.x <= familyMinX || family.x >= familyMaxX) {
 				family.vel.x *= -1; // Reverse horizontal direction
 			}
-            ball.overlaps(family, handleCollision);
+            guy1.overlaps(family, handleCollision);
 
 			// Update survival timer (increment every frame)
 			if (frameCount % 60 === 0) { // Increment once per second (60 FPS)
@@ -679,8 +663,8 @@ function keyPressed() {
 			
         } else if (state === 5) {
 			state = 6;
-			resetBall();
-			resetCamera();
+			lvl2Setup();
+			
 		
 		}
          else if (state === 8) {
@@ -692,6 +676,65 @@ function keyPressed() {
     }
 }
 
+function lvl2Setup() {
+	// Create the player ball
+	guy2 = new Sprite();
+	guy2.addImage(pic3);
+	guy2.collider = 'dynamic';
+	guy2.x = width * 0.1; // Starting position
+	guy2.y = height * 0.75;
+	guy2.visible = false;
+	guy2.rotation = 0; // Prevent rotation
+  	guy2.angularVelocity = 0; // Ensure no angular velocity
+	guy2.scale = 0.5;
+	guy2.autodraw = false;
+
+	//LEVEL 2 SPRITES BELOW
+
+	floorlvl2 = new Sprite(40, height * 0.95, 4000, 5, 'static');
+	floorlvl2.autodraw = false;
+	floorlvl2.visible = false;
+	floorlvl2.collider = 'none';
+
+	heartobstacles = new Group();
+	flaglvl2 = new Sprite (2000,height * 0.88,30,80);
+	flaglvl2.color = green;
+	flaglvl2.autodraw = false; //hidden until state 3
+	flaglvl2.visible = false;
+	heartobstacles.collider = 'none';
+	
+
+	for (let i = 0; i < 5; i++) {
+		let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 100, 100);
+		heartobstacle.autodraw = false;
+		heartobstacle.visible = false;
+		heartobstacle.collider = 'none';
+		heartobstacles.add(heartobstacle);
+	}
+}
+
+
+function guy2Movement() {
+	// Reset angular velocity and rotation
+	guy2.rotation = 0;
+	guy2.angularVelocity = 0;
+   // Move the ball left and right
+   if (keyIsDown(LEFT_ARROW)) {
+	   guy2.x -= 5; // Move left
+   }
+   if (keyIsDown(RIGHT_ARROW)) {
+	   guy2.x += 5; // Move right
+   }
+   // Jump if the ball is on the floor
+   if (keyIsDown(UP_ARROW)) { // Change this condition as needed to check if on the floor
+	   guy2.vel.y = -15; // Jump velocity
+   }
+
+   // Apply gravity
+   guy2.vel.y += 0.5; // Gravity effect
+   //ball.y += ball.vel.y; // Update ball's vertical position
+}
+
 
 
 
@@ -700,7 +743,7 @@ function collectDots() {
 	// Create a copy of the dots array to avoid modifying it while iterating
 	let collectedDots = [];
 	for (let dot of dots) {
-		if (ball.collides(dot)) {
+		if (guy1.collides(dot)) {
 			score += 1; // Increase score by 1
 			collectedDots.push(dot); // Mark the dot for removal
 		}
@@ -732,7 +775,7 @@ function winLevel() {
 	state = 3;//move to win state
 
 	// Remove everything from level 1
-	ball.visible = false;
+	guy1.remove();
 	dots.remove();
 	flag.remove();
 	secondDots.remove();
@@ -747,22 +790,29 @@ function winLevel() {
 
 function resetBall(x = width / 2, y = height /2) {
     console.log("Resetting ball to:", x, y);
-   ball.x = x; // Use provided x or default to 50
-   ball.y = y; // Use provided y or default to height * 0.8
-	ball.visible = true; // Make the ball visible
-   ball.velocity.x = 0; // Reset horizontal velocity
-    ball.velocity.y = 0; // Reset vertical velocity
-    ball.rotation = 0; // Reset rotation
-    ball.angularVelocity = 0; // Reset angular velocity
+   guy1.x = x; // Use provided x or default to 50
+   guy1.y = y; // Use provided y or default to height * 0.8
+	guy1.visible = true; // Make the ball visible
+   guy1.velocity.x = 0; // Reset horizontal velocity
+    guy1.velocity.y = 0; // Reset vertical velocity
+    guy1.rotation = 0; // Reset rotation
+    guy1.angularVelocity = 0; // Reset angular velocity
 }
-function resetCamera() {
-    // Reset camera to the center of the canvas
-    camera.position.x = width / 2; 
-    camera.position.y = height / 2;
+function resetguy2() {
+    console.log("Resetting ball to:", x, y);
+	guy2.x = width * 0.1; // Starting position
+	guy2.y = height * 0.75;
+	guy2.visible = true; // Make the ball visible
+   guy2.velocity.x = 0; // Reset horizontal velocity
+    guy2.velocity.y = 0; // Reset vertical velocity
+    guy2.rotation = 0; // Reset rotation
+    guy2.angularVelocity = 0; // Reset angular velocity
+	guy2Movement();
 }
+
 function winLevel2() {
 	state = 7;
-	ball.visible = false;
+	guy2.visible = false;
 	heartobstacles.forEach(heartobstacle => heartobstacle.remove());
 	flaglvl2.remove();
 	floorlvl2.remove();
@@ -775,11 +825,11 @@ function winLevel2() {
 function resetLevel3() {
     // Reset the level if the ball touches the family sprite
 	// Reset ball properties
-	ball.visible = true;
-	ball.x = 400; // Reset to initial position
-	ball.y = 550; // Place it on the ground level or any desired starting y-coordinate
-	ball.vel.x = 0;
-	ball.vel.y = 0;
+	guy1.visible = true;
+	guy1.x = 400; // Reset to initial position
+	guy1.y = 550; // Place it on the ground level or any desired starting y-coordinate
+	guy1.vel.x = 0;
+	guy1.vel.y = 0;
     family.x = width * 0.3; // Reset family position
     family.vel.x = familySpeed; // Reset family speed
    
@@ -798,7 +848,7 @@ function winLevel3() {
 	state = 10;
 
 	//remove sprites
-	ball.visible = false;
+	guy1.visible = false;
 	floorlvl3.remove();
 	family.remove();
 }
