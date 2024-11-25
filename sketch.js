@@ -799,8 +799,8 @@ function resetBall(x = width / 2, y = height /2) {
     guy1.angularVelocity = 0; // Reset angular velocity
 }
 function resetguy2() {
-    console.log("Resetting ball to:", x, y);
-	guy2.x = width * 0.1; // Starting position
+    console.log("Resetting ball to:", guy2.x, guy2.y);
+	guy2.x = 40; // Starting position
 	guy2.y = height * 0.75;
 	guy2.visible = true; // Make the ball visible
    guy2.velocity.x = 0; // Reset horizontal velocity
