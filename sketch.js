@@ -68,6 +68,7 @@ let pic9;
 let pic10;
 let pic11;
 let pic12;
+let backgroundMusic;
 
 
 function preload() {
@@ -82,6 +83,7 @@ function preload() {
 	pic10 = loadImage("assets/pic10.png");
 	pic11 = loadImage("assets/pic11.png")
 	pic12 = loadImage("assets/pic12.jpg")
+	backgroundMusic = loadSound("assets/backgroundMusic.mp3");
 	
 }
 
@@ -89,6 +91,9 @@ function setup() {
 	new Canvas(windowWidth, windowHeight);
 	displayMode('centered');
 	world.gravity.y = 10;
+
+	
+	
 
 	// Create the player ball
 	guy1 = new Sprite();
@@ -677,6 +682,7 @@ function keyPressed() {
     if (keyCode === 32) { // 32 is the keyCode for the space bar
 		if (state === 0) {
 			state = 1;
+			backgroundMusic.play();
 		} else if (state === 1) { 
             // Transition from instructions (state 1) to level gameplay (state 2)
             showInstructions = false; // Hide the instructions
