@@ -53,6 +53,8 @@ let pic3;
 let pic4;
 let pic5;
 let pic6;
+let pic7;
+
 
 
 
@@ -62,6 +64,8 @@ function preload() {
 	pic4 = loadImage("assets/vgpic4.png");
 	pic5 = loadImage("assets/vgpic5.png");
 	pic6 = loadImage("assets/vgpic6.png");
+	pic7 = loadImage("assets/heart.webp");
+
 	
 }
 
@@ -402,8 +406,9 @@ function draw() {
 
 			//LVL 2 GAME PLAY
 			background('white');
-	
-			image(pic6, width / 2 - pic6.width / 2, height / 2 - pic6.height / 2);
+			imageMode(CENTER);
+		
+			image(pic6, width / 2, height / 2, 800, 500);
 			floorlvl2.draw();
 			floorlvl2.visible = true;
 			 floorlvl2.collider = 'static';
@@ -697,21 +702,26 @@ function lvl2Setup() {
 
 	//LEVEL 2 SPRITES BELOW
 
-	floorlvl2 = new Sprite(40, height * 0.95, 4000, 5, 'static');
+	floorlvl2 = new Sprite(width / 2, height * 0.95, width, 5, 'static');
 	floorlvl2.autodraw = false;
 	floorlvl2.visible = false;
 	floorlvl2.collider = 'none';
 
 	heartobstacles = new Group();
-	flaglvl2 = new Sprite (2000,height * 0.88,30,80);
-	flaglvl2.color = green;
+	flaglvl2 = new Sprite (width * .95,height * 0.88,30,80);
+	flaglvl2.addImage(pic4);
 	flaglvl2.autodraw = false; //hidden until state 3
 	flaglvl2.visible = false;
 	heartobstacles.collider = 'none';
 	
 
 	for (let i = 0; i < 5; i++) {
-		let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 30, 30);
+		let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 40, 40);
+		//heartobstacle.font = 'Arial'; // You can choose a font, but most fonts will support the emoji
+   		//heartobstacle.textSize = 24;
+		//heartobstacle.text = "❤️";
+		heartobstacle.image = pic7;
+		heartobstacle.scale = 0.20;
 		heartobstacle.autodraw = false;
 		heartobstacle.visible = false;
 		heartobstacle.collider = 'none';
@@ -822,6 +832,7 @@ function winLevel2() {
 	heartobstacles.forEach(heartobstacle => heartobstacle.remove());
 	flaglvl2.remove();
 	floorlvl2.remove();
+	heartobstacles.remove();
 }
 
 //function resetState3() {
