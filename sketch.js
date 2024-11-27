@@ -1,7 +1,7 @@
 let state = 0
 let guy1;
 let guy2;
-let letguy3;
+let guy3;
 let floors = [];
 let showInstructions = true;
 let dots, secondDots, thirdDots, fourthDots;
@@ -173,27 +173,7 @@ function setup() {
 		
 		
 
-		//LEVEL 3 SPRITES BELOW
-			
-			floorlvl3 = new Sprite(width * 0.5, height * 0.95, width * 1, 5, 'static');
-			floorlvl3.visible = false;
-			floorlvl3.autodraw = false;
-			floorlvl3.collider = 'none';
-
-			//create a family sprite that moves randomly
-			family = new Sprite();
-			family.size = width * 0.1;
-			family.x = width * 0.3;
-			family.y = height * 0.9;
-			family.collider = 'none';
-
-			family.visible = false;
-			family.autodraw = false;
-
-			// Set the boundaries for family movement along the floor
-			familyMinX = floorlvl3.x - (floorlvl3.width / 2) + (family.size / 2); // Left edge
-			familyMaxX = floorlvl3.x + (floorlvl3.width / 2) - (family.size / 2); // Right edge
-
+		
 		//LEVEL 4 SPRITES BELOW
 			 // Create player sprite
   			playerLvl4 = new Sprite(width / 2, height / 2, 40, 40); // Positioned at center
@@ -493,17 +473,22 @@ function draw() {
 
 			background('white'); // Clear the screen for each frame
 
+			floorlvl3.draw();
 			floorlvl3.visible = true;
-			if (floorlvl3.visible) floorlvl3.draw();
+			floorlvl3.collider = 'static';
 
-			//ball reappears
-			guy3.visible = true; 
+			
+			guy3.visible = true;
+			guy3.active = true;
 			guy3.draw();
+			guy3.collider = "dynamic";
+			 
+			guy3Movement();
 
 			
 			// Ensure ball stays within screen bounds
-            guy3.x = constrain(guy3.x, 0, width); // Constrain horizontal movement
-            guy3.y = constrain(guy3.y, 0, height); // Constrain vertical movement
+            //guy3.x = constrain(guy3.x, 0, width); // Constrain horizontal movement
+            //guy3.y = constrain(guy3.y, 0, height); // Constrain vertical movement
 
 			family.visible = true;
 			family.draw();
@@ -687,6 +672,7 @@ function keyPressed() {
          else if (state === 8) {
 			state = 9;
 			lvl3Setup();
+			survivalTime = 0;
 		} else if (state === 13) {
 			state = 14;
 		}
@@ -724,9 +710,6 @@ function lvl2Setup() {
 
 	for (let i = 0; i < 5; i++) {
 		let heartobstacle = new Sprite(400 + i * 300, height * 0.9, 40, 40);
-		//heartobstacle.font = 'Arial'; // You can choose a font, but most fonts will support the emoji
-   		//heartobstacle.textSize = 24;
-		//heartobstacle.text = "❤️";
 		heartobstacle.image = pic7;
 		heartobstacle.scale = 0.20;
 		heartobstacle.autodraw = false;
@@ -738,16 +721,16 @@ function lvl2Setup() {
 
 function lvl3Setup() {
 	// Create the player ball
-	guy2 = new Sprite();
-	guy2.addImage(pic3);
-	guy2.collider = 'dynamic';
-	guy2.x = width * 0.1; // Starting position
-	guy2.y = height * 0.75;
-	guy2.visible = false;
-	guy2.rotation = 0; // Prevent rotation
-  	guy2.angularVelocity = 0; // Ensure no angular velocity
-	guy2.scale = 0.5;
-	guy2.autodraw = false;
+	guy3 = new Sprite();
+	guy3.addImage(pic3);
+	guy3.collider = 'dynamic';
+	guy3.x = width * 0.1; // Starting position
+	guy3.y = height * 0.75;
+	guy3.visible = false;
+	guy3.rotation = 0; // Prevent rotation
+  	guy3.angularVelocity = 0; // Ensure no angular velocity
+	guy3.scale = 0.5;
+	guy3.autodraw = false;
 
 	//LEVEL 3 SPRITES BELOW
 			
@@ -767,8 +750,8 @@ function lvl3Setup() {
 	family.autodraw = false;
 
 	// Set the boundaries for family movement along the floor
-	familyMinX = floorlvl3.x - (floorlvl3.width / 2) + (family.size / 2); // Left edge
-	familyMaxX = floorlvl3.x + (floorlvl3.width / 2) - (family.size / 2); // Right edge
+	//familyMinX = floorlvl3.x - (floorlvl3.width / 2) + (family.size / 2); // Left edge
+	//familyMaxX = floorlvl3.x + (floorlvl3.width / 2) - (family.size / 2); // Right edge
 }
 
 
@@ -792,6 +775,28 @@ function guy2Movement() {
    guy2.vel.y += 0.5; // Gravity effect
    //ball.y += ball.vel.y; // Update ball's vertical position
 }
+
+function guy3Movement() {
+	// Reset angular velocity and rotation
+	guy3.rotation = 0;
+	guy3.angularVelocity = 0;
+   // Move the ball left and right
+   if (keyIsDown(LEFT_ARROW)) {
+	   guy3.x -= 5; // Move left
+   }
+   if (keyIsDown(RIGHT_ARROW)) {
+	   guy3.x += 5; // Move right
+   }
+   // Jump if the ball is on the floor
+   if (keyIsDown(UP_ARROW)) { // Change this condition as needed to check if on the floor
+	   guy3.vel.y = -15; // Jump velocity
+   }
+
+   // Apply gravity
+   guy3.vel.y += 0.5; // Gravity effect
+   //ball.y += ball.vel.y; // Update ball's vertical position
+}
+
 
 
 
