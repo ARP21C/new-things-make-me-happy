@@ -2,6 +2,7 @@ let state = 0
 let guy1;
 let guy2;
 let guy3;
+let guy4;
 let floors = [];
 let showInstructions = true;
 let dots, secondDots, thirdDots, fourthDots;
@@ -30,8 +31,8 @@ let state10Duration = 1000; //5 seconds in milliseconds
 let state11StartTime = 0;//tracks when state 7 starts
 let state11Duration = 1000; //5 seconds in milliseconds
 let state12StartTime = 0;
-let state12Duration = 7000;
-let playerLvl4;
+let state12Duration = 1000;
+
 let belt;
 let beltSpeed = 2;
 let beltDirectionX = 1;
@@ -49,6 +50,7 @@ let velocityX = 8;
 
 //PRELOAD STUFF
 let font1;
+let font2;
 let pic1;
 let pic2;
 let pic3;
@@ -182,34 +184,10 @@ function setup() {
 		
 
 		
-		//LEVEL 4 SPRITES BELOW
-			 // Create player sprite
-  			playerLvl4 = new Sprite(width / 2, height / 2, 40, 40); // Positioned at center
-			playerLvl4.autodraw = false;
-			playerLvl4.visible = false;
-			playerLvl4.collider = 'none';
-
-			
-  			// Create the "belt" sprite
-  			belt = new Sprite(width * 0.1, height * 0.9, 30, 30);
-			belt.autodraw = false;
-			belt.visible = false; 
-			belt.collider = 'none';
-
-			//create the "car" sprite
-			car = new Sprite(width * 0.5, height * 0.3, 30, 30);
-			car.autodraw = false;
-			car.visible = false; 
-			car.collider = 'none';
-
-			// Create the "house" sprite
- 			 house = new Sprite(width * 0.2, height * 0.5, 30, 30);
-			house.autodraw = false;
-			house.visible = false; 
-			house.collider = 'none';
-
+		
 		//PRELOADING
 			font1 = loadFont("assets/Copyduck.ttf");
+			font2 = loadFont("assets/INFECTED.ttf");
 			pic1 = loadImage("assets/VG pic 1.png");
 			pic2 = loadImage("assets/vgpic2.jpg");
 			
@@ -597,39 +575,48 @@ function draw() {
 			break;
 		case 13:
 			background('red');
+			imageMode(CENTER);
+			image(pic12,width / 2, height / 2, width, height);
 			//LVL 4 INSTRUCTIONS
 			textSize(width * 0.07 );
-			strokeWeight(0); 
-			fill(0);
-			textFont(font1);
-			text("LEVEL X%FH*!: HELL", width / 2, height / 3.5);
+			stroke("red");
+			strokeWeight(3); 
+			fill("white");
+			textFont(font2);
+			text("LEVEL XXFHYB: HELL", width / 2, height / 3.5);
 
 			textFont('Arial');
 			textSize(20);
-			text("THERE IS NO WAY TO BEAT THIS LEVEL.\nYOU ARE FOREVER TORMENTED BY YOUR MATERIAL\nITEMS FOR CHOOSING THEM AND GREED\nOVER ANYTHING MEANINFUL OR FULFILLING IN YOUR LIFE.", width / 2, height / 2 );
+			text("THERE IS NO WAY TO BEAT THIS LEVEL.\nYOU ARE FOREVER TORMENTED BY YOUR MATERIAL\nITEMS FOR CHOOSING THEM AND GREED\nOVER ANYTHING MEANINFUL OR FULFILLING IN YOUR LIFE.\nPRESS SPACE TO START.", width / 2, height / 2 );
 			break;
 		case 14:
 			//LVL 4 GAMEPLAY
-			noGravity();
+			//noGravity();
 			background('red');
-			// Player movement
-			if (kb.pressing('left')) playerLvl4.vel.x = -5;
-			else if (kb.pressing('right')) playerLvl4.vel.x = 5;
-			else playerLvl4.vel.x = 0;
+			imageMode(CENTER);
+			image(pic12,width / 2, height / 2, width, height);
 
-			if (kb.pressing('up')) playerLvl4.vel.y = -5;
-			else if (kb.pressing('down')) playerLvl4.vel.y = 5;
-			else playerLvl4.vel.y = 0;
+			guy4.visible = true;
+			guy4.draw();
+
+			// Player movement
+			if (kb.pressing('left')) guy4.vel.x = -5;
+			else if (kb.pressing('right')) guy4.vel.x = 5;
+			else guy4.vel.x = 0;
+
+			if (kb.pressing('up')) guy4.vel.y = -5;
+			else if (kb.pressing('down')) guy4.vel.y = 5;
+			else guy4.vel.y = 0;
 
 			// Constrain player within screen boundaries
-			playerLvl4.x = constrain(playerLvl4.x, playerLvl4.w / 2, width - playerLvl4.w / 2);
-			playerLvl4.y = constrain(playerLvl4.y, playerLvl4.h / 2, height - playerLvl4.h / 2);
+			guy4.x = constrain(guy4.x, guy4.w / 2, width - guy4.w / 2);
+			guy4.y = constrain(guy4.y, guy4.h / 2, height - guy4.h / 2);
 
 			//make everything visible
 			belt.visible = true;
 			belt.draw();
-			playerLvl4.visible = true;
-			playerLvl4.draw();
+			guy4.visible = true;
+			guy4.draw();
 			car.visible = true;
 			car.draw();
 			house.visible = true;
@@ -671,9 +658,9 @@ function draw() {
 			}
 
 			//collisions
-			playerLvl4.overlaps(belt, resetForLvl4);
-			playerLvl4.overlaps(car, resetForLvl4);
-			playerLvl4.overlaps(house, resetForLvl4);
+			guy4.overlaps(belt, resetForLvl4);
+			guy4.overlaps(car, resetForLvl4);
+			guy4.overlaps(house, resetForLvl4);
 
 	}
 	
@@ -700,6 +687,7 @@ function keyPressed() {
 			lvl3Setup();
 		} else if (state === 13) {
 			state = 14;
+			lvl4Setup();
 		}
 		
     }
@@ -775,6 +763,42 @@ function lvl3Setup() {
 
 	family.visible = false;
 	family.autodraw = false;
+}
+
+function lvl4Setup() {
+	//LEVEL 4 SPRITES BELOW
+	 // Create player sprite
+	// Create the player ball
+	guy4 = new Sprite();
+	guy4.addImage(pic3);
+	guy4.collider = 'dynamic';
+	guy4.x = width * 0.1; // Starting position
+	guy4.y = height * 0.8;
+	guy4.visible = false;
+	guy4.rotation = 0; // Prevent rotation
+  	guy4.angularVelocity = 0; // Ensure no angular velocity
+	guy4.scale = 0.5;
+	guy4.autodraw = false;
+ 
+			 
+	// Create the "belt" sprite
+	belt = new Sprite(width * 0.1, height * 0.9, 30, 30);
+	belt.autodraw = false;
+	belt.visible = false; 
+	belt.collider = 'none';
+ 
+	//create the "car" sprite
+	car = new Sprite(width * 0.5, height * 0.3, 30, 30);
+	car.autodraw = false;
+	car.visible = false; 
+	car.collider = 'none';
+ 
+	// Create the "house" sprite
+	house = new Sprite(width * 0.2, height * 0.5, 30, 30);
+	house.autodraw = false;
+	house.visible = false; 
+	house.collider = 'none';
+ 
 }
 
 
@@ -942,7 +966,7 @@ function winLevel3() {
 }
 
 function resetForLvl4() {
-	playerLvl4.x = width / 2;
-	playerLvl4.y = height / 2;
+	guy4.x = width / 2;
+	guy4.y = height / 2;
 }
 console.log
