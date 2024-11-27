@@ -16,7 +16,7 @@ let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
 
 let state7StartTime = 0
-let state7Duration = 4000;
+let state7Duration = 1000;
 let floorlvl3;
 let lvl3Instructions = false;
 let family;
@@ -54,7 +54,7 @@ let pic4;
 let pic5;
 let pic6;
 let pic7;
-
+let pic8;
 
 
 
@@ -65,7 +65,7 @@ function preload() {
 	pic5 = loadImage("assets/vgpic5.png");
 	pic6 = loadImage("assets/vgpic6.png");
 	pic7 = loadImage("assets/heart.webp");
-
+	pic8 = loadImage("assets/pic8.avif");
 	
 }
 
@@ -448,14 +448,19 @@ function draw() {
 			break;
 
 		case 7:
-			background('skyblue');
+			background('white');
 			textAlign(CENTER, CENTER);
-			textSize(48);
+			imageMode(CENTER);
+		
+			image(pic8, width / 2, height / 2, 600, 350);
+			strokeWeight(0);
+			textAlign(CENTER, CENTER);
+			textSize(24);
 			fill(0);
-			text("Congrats!", width / 2, height / 2);
-			textSize(32);
-			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
-
+			text("Good job! You officially bossed up by\navoiding any meaningful connections in your life.\nNow you can buy...", width / 2, height * 0.2);
+			textSize(50);
+			text("A Lamborghini!!!!", width / 2, height * 0.8);
+			
 			// Ensure state4StartTime is set when entering state 4
 			if (state7StartTime === 0) {
 				state7StartTime = millis(); // Record the time when state 4 starts
