@@ -34,15 +34,15 @@ let state12StartTime = 0;
 let state12Duration = 1000;
 
 let belt;
-let beltSpeed = 2;
+let beltSpeed = 3;
 let beltDirectionX = 1;
 let beltDirectionY = 1;
 let car;
-let carSpeed = 2;
+let carSpeed = 3;
 let carDirectionX = 1;
 let carDirectionY = 1;
 let house;
-let houseSpeed = 2;
+let houseSpeed = 3;
 let houseDirectionX = 1;
 let houseDirectionY = 1;
 let velocityX = 8;
@@ -783,18 +783,23 @@ function lvl4Setup() {
 			 
 	// Create the "belt" sprite
 	belt = new Sprite(width * 0.1, height * 0.9, 30, 30);
+	belt.addImage(pic5);
 	belt.autodraw = false;
 	belt.visible = false; 
 	belt.collider = 'none';
+	belt.scale = 0.5;
  
 	//create the "car" sprite
 	car = new Sprite(width * 0.5, height * 0.3, 30, 30);
+	car.addImage(pic8);
 	car.autodraw = false;
 	car.visible = false; 
 	car.collider = 'none';
+	car.scale = 0.2;
  
 	// Create the "house" sprite
 	house = new Sprite(width * 0.2, height * 0.5, 30, 30);
+	house.addImage(pic10);
 	house.autodraw = false;
 	house.visible = false; 
 	house.collider = 'none';
@@ -968,5 +973,7 @@ function winLevel3() {
 function resetForLvl4() {
 	guy4.x = width / 2;
 	guy4.y = height / 2;
+
+	shakeScreen(10,50);
 }
 console.log
