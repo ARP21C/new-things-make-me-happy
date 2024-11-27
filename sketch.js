@@ -26,9 +26,9 @@ let familyDirection = 1;
 let familyMinX, familyMaxX;
 let survivalTime = 0; //track start time  of level 3
 let state10StartTime = 0;//tracks when state 6 starts
-let state10Duration = 4000; //5 seconds in milliseconds
+let state10Duration = 1000; //5 seconds in milliseconds
 let state11StartTime = 0;//tracks when state 7 starts
-let state11Duration = 7000; //5 seconds in milliseconds
+let state11Duration = 1000; //5 seconds in milliseconds
 let state12StartTime = 0;
 let state12Duration = 7000;
 let playerLvl4;
@@ -58,6 +58,9 @@ let pic6;
 let pic7;
 let pic8;
 let pic9;
+let pic10;
+let pic11;
+let pic12;
 
 
 function preload() {
@@ -69,6 +72,9 @@ function preload() {
 	pic7 = loadImage("assets/heart.webp");
 	pic8 = loadImage("assets/pic8.avif");
 	pic9 = loadImage("assets/pic9.png");
+	pic10 = loadImage("assets/pic10.png");
+	pic11 = loadImage("assets/pic11.png")
+	pic12 = loadImage("assets/pic12.jpg")
 	
 }
 
@@ -532,14 +538,19 @@ function draw() {
 		case 10:
 			//REWARD 4 LVL 3
 
-			background('skyblue');
+			background('white');
 			textAlign(CENTER, CENTER);
-			textSize(48);
+			imageMode(CENTER);
+		
+			image(pic10, width / 2, height / 2, 600, 350);
+			strokeWeight(0);
+			textAlign(CENTER, CENTER);
+			textSize(24);
 			fill(0);
-			text("Congrats!", width / 2, height / 2);
-			textSize(32);
-			text(`Now you get ${score}!`, width / 2, height / 2 + 50);
-
+			text("Congrats! You are now a billionare and can afford....", width / 2, height * 0.2);
+			textSize(50);
+			text("A MULTIMILLION DOLLAR MANSION!!!!", width / 2, height * 0.8);
+			
 			// Ensure state6StartTime is set when entering state 6
 			if (state10StartTime === 0) {
 				state10StartTime = millis(); // Record the time when state 6 starts
@@ -552,12 +563,12 @@ function draw() {
 		case 11:
 			//REALIZATION
 
-			background('skyblue');
+			background('white');
 			textAlign(CENTER, CENTER);
-			textSize(48);
+			textSize(30);
 			fill(0);
-			text("u are now 80...", width / 2, height / 2);
-			textSize(32);
+			strokeWeight(0);
+			text("You are now 80 years old and all alone. Your wife took the kids\nand half of your money because she never really liked you, only your money.\nIn solitude, you begin to realize material items don't mean anything if you have no one to show\nthem off to and the instant gratification they brought only got more and more instant.", width / 2, height / 2);
 
 			// Ensure state7StartTime is set when entering state 6
 			if (state11StartTime === 0) {
@@ -569,12 +580,14 @@ function draw() {
 			break;
 		case 12:
 			//U DIE
-			background('skyblue');
+			background('white');
 			textAlign(CENTER, CENTER);
 			textSize(48);
 			fill(0);
-			text("u die lol", width / 2, height / 2);
-			textSize(32);
+			text("You die of old age", width / 2, height * 0.1);
+			imageMode(CENTER);
+		
+			image(pic11, width / 2, height / 2, 500, 500);
 			if (state12StartTime === 0) {
 				state12StartTime = millis(); // Record the time when state 6 starts
 			}
@@ -585,6 +598,15 @@ function draw() {
 		case 13:
 			background('red');
 			//LVL 4 INSTRUCTIONS
+			textSize(width * 0.07 );
+			strokeWeight(0); 
+			fill(0);
+			textFont(font1);
+			text("LEVEL X%FH*!: HELL", width / 2, height / 3.5);
+
+			textFont('Arial');
+			textSize(20);
+			text("THERE IS NO WAY TO BEAT THIS LEVEL.\nYOU ARE FOREVER TORMENTED BY YOUR MATERIAL\nITEMS FOR CHOOSING THEM AND GREED\nOVER ANYTHING MEANINFUL OR FULFILLING IN YOUR LIFE.", width / 2, height / 2 );
 			break;
 		case 14:
 			//LVL 4 GAMEPLAY
@@ -914,7 +936,7 @@ function winLevel3() {
 	state = 10;
 
 	//remove sprites
-	guy1.visible = false;
+	guy3.remove();
 	floorlvl3.remove();
 	family.remove();
 }
