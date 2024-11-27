@@ -1,6 +1,7 @@
 let state = 0
 let guy1;
 let guy2;
+let letguy3;
 let floors = [];
 let showInstructions = true;
 let dots, secondDots, thirdDots, fourthDots;
@@ -468,40 +469,41 @@ function draw() {
 			
 			if (millis() - state7StartTime >= state7Duration) {
 				state = 8;
-				survivalTime = 0; // Reset survival time counter
-				resetLevel3();
+				//survivalTime = 0; // Reset survival time counter
+			
 			}
 			break;
 
 		case 8:
 			//LVL 3 INSTRUCTIONS
-			textAlign(CENTER, CENTER);
-			textSize(width * 0.08);
+			background('white');
+			textSize(width * 0.07 );
+			strokeWeight(0); 
 			fill(0);
-			text("Level 3: Family Bonds", width / 2, height / 3);
+			textFont(font1);
+			text("Level 3:Family Bonds", width / 2, height / 3.5);
 
-			textSize(width * 0.025);
-			text("Use the arrow keys to control your player in attempts to avoid spending time with your family.", width / 2, height / 2);
-			text("Families bring love and will distract you from building your career!", width / 2, height / 2 + 40);
-			text("CEOs of companies never spend quality time with their families.", width / 2, height / 2 + 80);
-			text("Win this level by surviving 10 seconds without contacting your family.", width / 2, height / 2 + 100);
-			
+			textFont('Arial');
+			textSize(20);
+			text("Some poor chick married and had kids with you anyways because of your money.\n(I told you money is the key to life)\nNow you have to avoid them because they will distract you from building\nyour networth. Billionares never spend time with their families!\nWin this level by avoiding contact with your family for 10 seconds.\nPress the space bar to start.", width / 2, height / 2.5 );
+			break;
 			
 		case 9:
 			//LVL 3 GAMEPLAY
 
-			background('skyblue'); // Clear the screen for each frame
+			background('white'); // Clear the screen for each frame
 
 			floorlvl3.visible = true;
 			if (floorlvl3.visible) floorlvl3.draw();
 
 			//ball reappears
-			guy1.visible = true; 
+			guy3.visible = true; 
+			guy3.draw();
 
 			
 			// Ensure ball stays within screen bounds
-            guy1.x = constrain(guy1.x, 0, width); // Constrain horizontal movement
-            guy1.y = constrain(guy1.y, 0, height); // Constrain vertical movement
+            guy3.x = constrain(guy3.x, 0, width); // Constrain horizontal movement
+            guy3.y = constrain(guy3.y, 0, height); // Constrain vertical movement
 
 			family.visible = true;
 			family.draw();
@@ -514,7 +516,7 @@ function draw() {
 			if (family.x <= familyMinX || family.x >= familyMaxX) {
 				family.vel.x *= -1; // Reverse horizontal direction
 			}
-            guy1.overlaps(family, handleCollision);
+            guy3.overlaps(family, handleCollision);
 
 			// Update survival timer (increment every frame)
 			if (frameCount % 60 === 0) { // Increment once per second (60 FPS)
@@ -680,11 +682,11 @@ function keyPressed() {
         } else if (state === 5) {
 			state = 6;
 			lvl2Setup();
-			
 		
 		}
          else if (state === 8) {
 			state = 9;
+			lvl3Setup();
 		} else if (state === 13) {
 			state = 14;
 		}
@@ -732,6 +734,41 @@ function lvl2Setup() {
 		heartobstacle.collider = 'none';
 		heartobstacles.add(heartobstacle);
 	}
+}
+
+function lvl3Setup() {
+	// Create the player ball
+	guy2 = new Sprite();
+	guy2.addImage(pic3);
+	guy2.collider = 'dynamic';
+	guy2.x = width * 0.1; // Starting position
+	guy2.y = height * 0.75;
+	guy2.visible = false;
+	guy2.rotation = 0; // Prevent rotation
+  	guy2.angularVelocity = 0; // Ensure no angular velocity
+	guy2.scale = 0.5;
+	guy2.autodraw = false;
+
+	//LEVEL 3 SPRITES BELOW
+			
+	floorlvl3 = new Sprite(width * 0.5, height * 0.95, width * 1, 5, 'static');
+	floorlvl3.visible = false;
+	floorlvl3.autodraw = false;
+	floorlvl3.collider = 'none';
+
+	//create a family sprite that moves randomly
+	family = new Sprite();
+	family.size = width * 0.1;
+	family.x = width * 0.3;
+	family.y = height * 0.9;
+	family.collider = 'none';
+
+	family.visible = false;
+	family.autodraw = false;
+
+	// Set the boundaries for family movement along the floor
+	familyMinX = floorlvl3.x - (floorlvl3.width / 2) + (family.size / 2); // Left edge
+	familyMaxX = floorlvl3.x + (floorlvl3.width / 2) - (family.size / 2); // Right edge
 }
 
 
