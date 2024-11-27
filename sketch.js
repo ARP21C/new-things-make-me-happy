@@ -21,7 +21,7 @@ let state7Duration = 1000;
 let floorlvl3;
 let lvl3Instructions = false;
 let family;
-let familySpeed = 2;
+//let familySpeed = 4;
 let familyDirection = 1;
 let familyMinX, familyMaxX;
 let survivalTimer = 0; //track start time  of level 3
@@ -44,6 +44,7 @@ let house;
 let houseSpeed = 2;
 let houseDirectionX = 1;
 let houseDirectionY = 1;
+let velocityX = 8;
 
 
 //PRELOAD STUFF
@@ -56,7 +57,7 @@ let pic5;
 let pic6;
 let pic7;
 let pic8;
-
+let pic9;
 
 
 function preload() {
@@ -67,6 +68,7 @@ function preload() {
 	pic6 = loadImage("assets/vgpic6.png");
 	pic7 = loadImage("assets/heart.webp");
 	pic8 = loadImage("assets/pic8.avif");
+	pic9 = loadImage("assets/pic9.png");
 	
 }
 
@@ -472,6 +474,8 @@ function draw() {
 			//LVL 3 GAMEPLAY
 
 			background('white'); // Clear the screen for each frame
+			stroke(0);
+			strokeWeight(3);
 
 			floorlvl3.draw();
 			floorlvl3.visible = true;
@@ -484,23 +488,23 @@ function draw() {
 			guy3.collider = "dynamic";
 			 
 			guy3Movement();
-
+	
 			
 			// Ensure ball stays within screen bounds
-            //guy3.x = constrain(guy3.x, 0, width); // Constrain horizontal movement
-            //guy3.y = constrain(guy3.y, 0, height); // Constrain vertical movement
+            guy3.x = constrain(guy3.x, 0, width); // Constrain horizontal movement
+            guy3.y = constrain(guy3.y, 0, height); // Constrain vertical movement
 
+			// Move the family sprite horizontally based on the velocity
+			family.position.x += velocityX;
+
+			// Reverse direction if family hits the left or right edge
+			if (family.position.x <= 0 || family.position.x >= width) {
+			velocityX = -velocityX; // Reverse the direction
+			}
 			family.visible = true;
 			family.draw();
+			family.collider = 'dynamic';
 
-            // Family sprite moves randomly in level 3
-			let speed = 4; // Movement speed
-			family.x += speed * familyDirection;
-
-			// Reverse direction if family reaches the left or right edge
-			if (family.x <= familyMinX || family.x >= familyMaxX) {
-				family.vel.x *= -1; // Reverse horizontal direction
-			}
             guy3.overlaps(family, handleCollision);
 
 			// Update survival timer (increment every frame)
@@ -686,7 +690,7 @@ function lvl2Setup() {
 	guy2.addImage(pic3);
 	guy2.collider = 'dynamic';
 	guy2.x = width * 0.1; // Starting position
-	guy2.y = height * 0.75;
+	guy2.y = height * 0.8;
 	guy2.visible = false;
 	guy2.rotation = 0; // Prevent rotation
   	guy2.angularVelocity = 0; // Ensure no angular velocity
@@ -725,7 +729,7 @@ function lvl3Setup() {
 	guy3.addImage(pic3);
 	guy3.collider = 'dynamic';
 	guy3.x = width * 0.1; // Starting position
-	guy3.y = height * 0.75;
+	guy3.y = height * 0.8;
 	guy3.visible = false;
 	guy3.rotation = 0; // Prevent rotation
   	guy3.angularVelocity = 0; // Ensure no angular velocity
@@ -741,10 +745,12 @@ function lvl3Setup() {
 
 	//create a family sprite that moves randomly
 	family = new Sprite();
+	family.addImage(pic9);
 	family.size = width * 0.1;
 	family.x = width * 0.3;
 	family.y = height * 0.9;
 	family.collider = 'none';
+	family.scale = 0.35;
 
 	family.visible = false;
 	family.autodraw = false;
@@ -889,13 +895,13 @@ function winLevel2() {
 function resetLevel3() {
     // Reset the level if the ball touches the family sprite
 	// Reset ball properties
-	guy1.visible = true;
-	guy1.x = 400; // Reset to initial position
-	guy1.y = 550; // Place it on the ground level or any desired starting y-coordinate
-	guy1.vel.x = 0;
-	guy1.vel.y = 0;
-    family.x = width * 0.3; // Reset family position
-    family.vel.x = familySpeed; // Reset family speed
+	guy3.visible = true;
+	guy3.x = 400; // Reset to initial position
+	guy3.y = 550; // Place it on the ground level or any desired starting y-coordinate
+	guy3.vel.x = 0;
+	guy3.vel.y = 0;
+    //family.x = width * 0.3; // Reset family position
+    //family.vel.x = familySpeed; // Reset family speed
    
 	// Reset survival timer
    
