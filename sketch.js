@@ -47,6 +47,11 @@ let houseDirectionX = 1;
 let houseDirectionY = 1;
 let velocityX = 8;
 
+let shakeAmount = 10;
+let shakeDuration = 60;
+let shakeSpeed = 1;
+
+
 
 //PRELOAD STUFF
 let font1;
@@ -803,6 +808,21 @@ function lvl4Setup() {
 	house.autodraw = false;
 	house.visible = false; 
 	house.collider = 'none';
+
+	  // Handle screen shake effect if necessary
+	  if (shakeDuration > 0) {
+		camera.x += random(-shakeAmount, shakeAmount); // Random horizontal shake
+		camera.y += random(-shakeAmount, shakeAmount); // Random vertical shake
+		shakeDuration -= shakeSpeed; // Decrease shake duration over time
+	  }
+	
+	  // Reset camera to center when the shake is finished
+	  if (shakeDuration <= 0) {
+		shakeDuration = 0;
+		camera.x = width / 2;
+		camera.y = height / 2;
+	  }
+	
  
 }
 
@@ -974,6 +994,13 @@ function resetForLvl4() {
 	guy4.x = width / 2;
 	guy4.y = height / 2;
 
-	shakeScreen(10,50);
+	shakeScreen(); 
 }
+
+// Function to initiate the screen shake
+function shakeScreen() {
+	shakeAmount();
+	shakeDuration();
+	shakeSpeed();
+  }
 console.log
