@@ -24,7 +24,7 @@ let family;
 //let familySpeed = 4;
 let familyDirection = 1;
 let familyMinX, familyMaxX;
-let survivalTimer = 0; //track start time  of level 3
+let survivalTime = 0; //track start time  of level 3
 let state10StartTime = 0;//tracks when state 6 starts
 let state10Duration = 4000; //5 seconds in milliseconds
 let state11StartTime = 0;//tracks when state 7 starts
@@ -507,22 +507,22 @@ function draw() {
 
             guy3.overlaps(family, handleCollision);
 
-			// Update survival timer (increment every frame)
-			if (frameCount % 60 === 0) { // Increment once per second (60 FPS)
-				survivalTime++;
-			}
-
 			// Display the survival timer
 			textAlign(RIGHT, TOP); // Align text to the top-right corner
 			textSize(32); // Set text size
 			fill(0); // Set text color to black
-			text(`Survival Time: ${Math.floor(survivalTimer / 1000)}s`, width - 20, 20); // Show the timer in seconds
+			strokeWeight(0);
+			text(`Survival Time: ${Math.floor(survivalTime)}s`, width - 20, 20);
+
+			if (frameCount % 60 === 0) { // Increment once per second (60 FPS)
+				survivalTime++;
+			  }
 
             // Check if 10 seconds have passed
     		if (survivalTime >= 10) {
-       			 state = 10; // Move to state 6
-				 winLevel3();
-    		}
+				state = 10; // Move to state 10
+				winLevel3(); // Trigger win
+			  }
 
 			// Fix the camera at the center of the screen
 			camera.x = width * 0.5;
@@ -676,7 +676,6 @@ function keyPressed() {
          else if (state === 8) {
 			state = 9;
 			lvl3Setup();
-			survivalTime = 0;
 		} else if (state === 13) {
 			state = 14;
 		}
@@ -754,10 +753,6 @@ function lvl3Setup() {
 
 	family.visible = false;
 	family.autodraw = false;
-
-	// Set the boundaries for family movement along the floor
-	//familyMinX = floorlvl3.x - (floorlvl3.width / 2) + (family.size / 2); // Left edge
-	//familyMaxX = floorlvl3.x + (floorlvl3.width / 2) - (family.size / 2); // Right edge
 }
 
 
@@ -910,6 +905,7 @@ function resetLevel3() {
 function handleCollision() {
     // Reset ball and family positions on collision
     resetLevel3();
+	survivalTime = 0;
 
     // Keep survivalTimer intact so it doesn't reset
 }
