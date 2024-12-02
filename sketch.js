@@ -10,15 +10,15 @@ const dotCount = 6;
 let score = 0;
 let flag;
 let state3StartTime = 0;//tracks when state 2 starts
-let state3Duration = 1000; //5 seconds in milliseconds
+let state3Duration = 4000; //5 seconds in milliseconds
 let state4StartTime = 0;
-let state4Duration = 1000;
+let state4Duration = 7000;
 let floorlvl2;
 let heartobstacles; //lvl 2 heart obstacles
 let flaglvl2;
 
 let state7StartTime = 0
-let state7Duration = 1000;
+let state7Duration = 4000;
 let floorlvl3;
 let lvl3Instructions = false;
 let family;
@@ -27,11 +27,11 @@ let familyDirection = 1;
 let familyMinX, familyMaxX;
 let survivalTime = 0; //track start time  of level 3
 let state10StartTime = 0;//tracks when state 6 starts
-let state10Duration = 1000; //5 seconds in milliseconds
+let state10Duration = 4000; //5 seconds in milliseconds
 let state11StartTime = 0;//tracks when state 7 starts
-let state11Duration = 1000; //5 seconds in milliseconds
+let state11Duration = 9000; //5 seconds in milliseconds
 let state12StartTime = 0;
-let state12Duration = 1000;
+let state12Duration = 3000;
 
 let belt;
 let beltSpeed = 3;
